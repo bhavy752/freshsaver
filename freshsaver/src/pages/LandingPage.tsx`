@@ -1,0 +1,363 @@
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { 
+  Leaf, Camera, ChefHat, TrendingDown, ArrowRight, Sparkles, 
+  Clock, Utensils, ShoppingCart, MessageSquare, X, 
+  ChevronRight, CheckCircle2, Zap, ShieldCheck, DollarSign 
+} from 'lucide-react';
+
+interface LandingPageProps {
+  onGetStarted: () => void;
+  onSignIn: () => void;
+}
+
+const fadeUp = {
+  initial: { opacity: 0, y: 20 },
+  whileInView: { opacity: 1, y: 0 },
+  viewport: { once: true },
+  transition: { duration: 0.5 },
+};
+
+const FeatureCard = ({ icon: Icon, title, desc, color, index }: any) => (
+  <motion.div
+    initial={{ opacity: 0, y: 20 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true }}
+    transition={{ duration: 0.4, delay: index * 0.1 }}
+    whileHover={{ y: -5, scale: 1.02 }}
+    className="group relative rounded-3xl bg-white/60 backdrop-blur-sm border border-sage-100 p-8 shadow-sm hover:shadow-xl transition-all overflow-hidden"
+  >
+    <div className={`absolute top-0 right-0 w-24 h-24 -mr-8 -mt-8 rounded-full blur-3xl opacity-10 ${
+      color === 'sage' ? 'bg-emerald-500' : color === 'coral' ? 'bg-orange-500' : 'bg-amber-500'
+    }`} />
+    
+    <div className={`inline-flex items-center justify-center w-14 h-14 rounded-2xl mb-6 transition-transform group-hover:rotate-6 ${
+      color === 'sage' ? 'bg-emerald-100 text-emerald-600' : color === 'coral' ? 'bg-orange-100 text-orange-600' : 'bg-amber-100 text-amber-600'
+    }`}>
+      <Icon className="w-7 h-7" strokeWidth={2.5} />
+    </div>
+    <h3 className="text-xl font-extrabold text-slateink-800 mb-3 group-hover:text-emerald-600 transition-colors">{title}</h3>
+    <p className="text-sm text-slateink-500 font-medium leading-relaxed">{desc}</p>
+  </motion.div>
+);
+
+export function LandingPage({ onGetStarted, onSignIn }: LandingPageProps) {
+  const [isAiDrawerOpen, setIsAiDrawerOpen] = useState(false);
+
+  return (
+    <div className="min-h-screen bg-[#FDFBF7] text-slateink-900 selection:bg-emerald-100 selection:text-emerald-900">
+      {/* Navigation */}
+      <motion.nav
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="sticky top-0 z-50 bg-[#FDFBF7]/80 backdrop-blur-xl border-b border-emerald-50/50"
+      >
+        <div className="max-w-7xl mx-auto px-6 lg:px-12 py-4 flex items-center justify-between">
+          <div className="flex items-center gap-3 group cursor-pointer">
+            <div className="flex items-center justify-center w-11 h-11 rounded-2xl bg-emerald-500 shadow-lg shadow-emerald-200 group-hover:rotate-12 transition-transform">
+              <Leaf className="w-6 h-6 text-white" strokeWidth={2.5} />
+            </div>
+            <span className="text-2xl font-black text-slateink-800 tracking-tighter">FreshSaver</span>
+          </div>
+          <div className="flex items-center gap-4">
+            <button onClick={onSignIn} className="hidden sm:block text-sm font-bold text-slateink-600 hover:text-emerald-600 transition-colors px-4 py-2">
+              Sign In
+            </button>
+            <button onClick={onGetStarted} className="text-sm font-bold text-white bg-emerald-500 rounded-2xl px-6 py-3 hover:bg-emerald-600 active:scale-95 transition-all shadow-md shadow-emerald-200">
+              Get Started
+            </button>
+          </div>
+        </div>
+      </motion.nav>
+
+      {/* Hero Section */}
+      <section className="relative max-w-7xl mx-auto px-6 lg:px-12 pt-20 lg:pt-32 pb-24">
+        <div className="grid lg:grid-cols-2 gap-16 items-center">
+          <motion.div 
+            initial={{ opacity: 0, x: -30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6 }}
+            className="text-center lg:text-left"
+          >
+            <div className="inline-flex items-center gap-2 rounded-full bg-emerald-100 px-4 py-1.5 mb-8 border border-emerald-200">
+              <Sparkles className="w-4 h-4 text-emerald-600" strokeWidth={2.5} />
+              <span className="text-xs font-bold text-emerald-700 uppercase tracking-wider">AI-Powered Pantry Intelligence</span>
+            </div>
+            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-black text-slateink-900 tracking-tight leading-[1.05]">
+              Stop wasting <br />
+              <span className="text-emerald-500 relative">
+                food.
+                <svg className="absolute -bottom-2 left-0 w-full h-3 text-emerald-200" viewBox="0 0 100 10" preserveAspectRatio="none">
+                  <path d="M0 5 Q 25 0, 50 5 T 100 5" stroke="currentColor" strokeWidth="4" fill="none" strokeLinecap="round" />
+                </svg>
+              </span>
+            </h1>
+            <p className="text-lg text-slateink-500 font-medium mt-8 max-w-xl mx-auto lg:mx-0 leading-relaxed">
+              The premium intelligence layer for your kitchen. Track expiry heatmaps, 
+              auto-sync family inventories, and rescue ingredients with our AI Chef.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 mt-10 justify-center lg:justify-start">
+              <button onClick={onGetStarted} className="flex items-center justify-center gap-2 rounded-2xl bg-emerald-500 text-white font-bold text-lg py-4 px-8 shadow-xl shadow-emerald-200 hover:bg-emerald-600 active:scale-95 transition-all group">
+                Start Saving Now
+                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" strokeWidth={2.5} />
+              </button>
+              <button onClick={onSignIn} className="flex items-center justify-center gap-2 rounded-2xl border-2 border-slateink-100 bg-white text-slateink-700 font-bold text-lg py-4 px-8 hover:bg-slateink-50 active:scale-95 transition-all shadow-sm">
+                Existing User
+              </button>
+            </div>
+            
+            {/* Quick Metrics */}
+            <div className="grid grid-cols-3 gap-4 mt-12 pt-12 border-t border-emerald-100">
+              {[
+                { label: 'Food Rescued', val: '1.2M+ kg', icon: CheckCircle2 },
+                { label: 'Money Saved', val: '$4.5M', icon: DollarSign },
+                { label: 'Active Homes', val: '12k+', icon: ShieldCheck },
+              ].map((stat) => (
+                <div key={stat.label} className="text-center lg:text-left">
+                  <div className="flex items-center justify-center lg:justify-start gap-2 text-emerald-600 mb-1">
+                    <stat.icon className="w-4 h-4" strokeWidth={3} />
+                    <span className="text-[10px] font-black uppercase tracking-widest">{stat.label}</span>
+                  </div>
+                  <p className="text-xl font-black text-slateink-900">{stat.val}</p>
+                </div>
+              ))}
+            </div>
+          </motion.div>
+
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.7, delay: 0.2 }}
+            className="relative hidden lg:block"
+          >
+            <div className="absolute inset-0 bg-emerald-400/20 rounded-[3rem] blur-3xl transform rotate-6" />
+            <div className="relative bg-white rounded-[2.5rem] shadow-2xl border border-emerald-50 p-8 space-y-6 overflow-hidden">
+              <div className="flex items-center justify-between mb-8">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-emerald-500 flex items-center justify-center shadow-lg shadow-emerald-200">
+                    <Leaf className="w-5 h-5 text-white" strokeWidth={2.5} />
+                  </div>
+                  <span className="font-black text-slateink-800 text-lg">Family Pantry</span>
+                </div>
+                <div className="flex gap-1">
+                  <div className="w-2 h-2 rounded-full bg-slateink-200" />
+                  <div className="w-2 h-2 rounded-full bg-slateink-200" />
+                  <div className="w-2 h-2 rounded-full bg-emerald-500" />
+                </div>
+              </div>
+              
+              <div className="grid grid-cols-3 gap-3 mb-6">
+                {['Critical', 'Soon', 'Fresh'].map((label, i) => (
+                  <div key={label} className={`rounded-2xl p-3 text-center border ${
+                    i === 0 ? 'bg-red-50 border-red-100 text-red-600' : 
+                    i === 1 ? 'bg-amber-50 border-amber-100 text-amber-600' : 
+                    'bg-emerald-50 border-emerald-100 text-emerald-600'
+                  }`}>
+                    <p className="text-[10px] font-black uppercase">{label}</p>
+                    <p className="text-lg font-black">{i === 0 ? '2' : i === 1 ? '5' : '14'}</p>
+                  </div>
+                ))}
+              </div>
+
+              <div className="space-y-3">
+                {[
+                  { name: 'Organic Avocado', days: '1 day left', color: 'bg-red-500', icon: '🥑' },
+                  { name: 'Almond Milk', days: '3 days left', color: 'bg-amber-500', icon: '🥛' },
+                  { name: 'Baby Spinach', days: '6 days left', color: 'bg-emerald-500', icon: '🥬' },
+                ].map((item) => (
+                  <div key={item.name} className="flex items-center gap-4 p-4 rounded-2xl bg-slateink-50/50 border border-slateink-100 hover:bg-white transition-all group cursor-pointer">
+                    <div className="w-12 h-12 rounded-xl bg-white flex items-center justify-center text-2xl shadow-sm group-hover:scale-110 transition-transform">
+                      {item.icon}
+                    </div>
+                    <div className="flex-1">
+                      <p className="text-sm font-bold text-slateink-800">{item.name}</p>
+                      <p className="text-xs text-slateink-400 font-medium">{item.days}</p>
+                    </div>
+                    <div className={`w-2 h-2 rounded-full ${item.color}`} />
+                  </div>
+                ))}
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Features Grid */}
+      <section className="py-24 bg-white">
+        <div className="max-w-7xl mx-auto px-6 lg:px-12">
+          <div className="text-center mb-20">
+            <h2 className="text-4xl lg:text-5xl font-black text-slateink-900 tracking-tight mb-6">
+              Engineer your kitchen for <span className="text-emerald-500">zero waste.</span>
+            </h2>
+            <p className="text-lg text-slateink-500 font-medium max-w-2xl mx-auto leading-relaxed">
+              Beyond simple lists. FreshSaver uses behavioral psychology and AI to make 
+              waste prevention instinctive and rewarding.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {[
+              { icon: Camera, title: 'AI Receipt OCR', desc: 'Stop manual entry. Upload any grocery receipt and our AI maps items to expiry dates automatically.', color: 'sage' },
+              { icon: Clock, title: 'Expiry Heatmaps', desc: 'Visual urgency signals tell you exactly what to cook tonight, preventing the "hidden crisper" tragedy.', color: 'coral' },
+              { icon: ChefHat, title: 'Dynamic AI Recipes', desc: 'Our AI Chef analyzes your expiring items to suggest gourmet meals you can make right now.', color: 'amber' },
+              { icon: ShoppingCart, title: 'Predictive Shopping', desc: 'Grocery lists that learn your consumption patterns to prevent over-buying in the first place.', color: 'sage' },
+              { icon: TrendingDown, title: 'Impact Tracking', desc: 'Visualize your financial savings and environmental footprint in real-time as you rescue food.', color: 'coral' },
+              { icon: Utensils, title: 'Family Sync', desc: 'Multi-user households with instant updates. No more buying a second gallon of milk.', color: 'amber' },
+            ].map((feature, i) => (
+              <FeatureCard key={feature.title} {...feature} index={i} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Interactive Demo Banner */}
+      <section className="max-w-7xl mx-auto px-6 lg:px-12 py-12">
+        <div className="relative rounded-[3rem] bg-slateink-900 p-8 lg:p-16 overflow-hidden text-center">
+          <div className="absolute top-0 left-0 w-full h-full opacity-20 pointer-events-none">
+             <div className="absolute top-[-10%] left-[-10%] w-64 h-64 bg-emerald-500 rounded-full blur-[120px]" />
+             <div className="absolute bottom-[-10%] right-[-10%] w-64 h-64 bg-emerald-700 rounded-full blur-[120px]" />
+          </div>
+          <div className="relative z-10">
+            <h2 className="text-3xl lg:text-5xl font-black text-white mb-6">Experience the Magic.</h2>
+            <p className="text-emerald-100/80 text-lg mb-10 max-w-2xl mx-auto font-medium">
+              Try our interactive playground. See how we turn a messy fridge into a 
+              perfectly optimized pantry without creating an account.
+            </p>
+            <button onClick={onGetStarted} className="bg-white text-slateink-900 px-10 py-4 rounded-2xl font-black text-lg hover:bg-emerald-50 transition-all active:scale-95 shadow-xl">
+              Enter Demo Playground
+            </button>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="max-w-7xl mx-auto px-6 lg:px-12 py-24">
+        <div className="rounded-[3rem] bg-gradient-to-br from-emerald-500 to-emerald-700 p-12 lg:p-24 text-center text-white shadow-2xl shadow-emerald-200 relative overflow-hidden">
+          <div className="absolute top-0 right-0 p-12 opacity-10">
+            <Leaf className="w-64 h-64 rotate-12" />
+          </div>
+          <h2 className="text-4xl lg:text-6xl font-black tracking-tight mb-8">Join the zero-waste <br />revolution today.</h2>
+          <p className="text-emerald-100 text-lg font-medium max-w-2xl mx-auto mb-12 leading-relaxed">
+            Start saving money, protecting the planet, and eating fresher food. 
+            It takes 30 seconds to set up your first household.
+          </p>
+          <button onClick={onGetStarted} className="bg-white text-emerald-700 px-12 py-5 rounded-2xl font-black text-xl hover:bg-emerald-50 active:scale-95 transition-all shadow-lg">
+            Get Started For Free
+          </button>
+        </div>
+      </section>
+
+      {/* AI Co-Chef Drawer */}
+      <AnimatePresence>
+        {isAiDrawerOpen && (
+          <>
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsAiDrawerOpen(false)}
+              className="fixed inset-0 z-[60] bg-slateink-900/40 backdrop-blur-sm" 
+            />
+            <motion.div 
+              initial={{ x: '100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '100%' }}
+              transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+              className="fixed right-0 top-0 h-full w-full max-w-md z-[70] bg-white shadow-2xl p-8 overflow-y-auto"
+            >
+              <div className="flex items-center justify-between mb-8">
+                <div className="flex items-center gap-3">
+                  <div className="w-12 h-12 rounded-2xl bg-emerald-500 flex items-center justify-center text-white shadow-lg shadow-emerald-200">
+                    <ChefHat className="w-6 h-6" strokeWidth={2.5} />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-black text-slateink-900">AI Co-Chef</h3>
+                    <p className="text-xs font-bold text-emerald-600 uppercase tracking-widest">Virtual Guide</p>
+                  </div>
+                </div>
+                <button onClick={() => setIsAiDrawerOpen(false)} className="p-2 rounded-xl hover:bg-slateink-50 transition-colors">
+                  <X className="w-6 h-6 text-slateink-400" />
+                </button>
+              </div>
+
+              <div className="space-y-8">
+                <section>
+                  <h4 className="text-lg font-black text-slateink-800 mb-4 flex items-center gap-2">
+                    <Zap className="w-5 h-5 text-amber-500" /> Smart Inventory
+                  </h4>
+                  <div className="bg-emerald-50 rounded-2xl p-4 border border-emerald-100">
+                    <p className="text-sm text-emerald-800 font-medium leading-relaxed">
+                      I scan your items and calculate "Waste-Probability". When I see your milk is expiring in 48h, 
+                      I'll ping you with a <strong>"Rescue Alert"</strong>.
+                    </p>
+                  </div>
+                </section>
+
+                <section>
+                  <h4 className="text-lg font-black text-slateink-800 mb-4 flex items-center gap-2">
+                    <Camera className="w-5 h-5 text-emerald-500" /> Receipt Parsing
+                  </h4>
+                  <div className="bg-slateink-50 rounded-2xl p-4 border border-slateink-100">
+                    <p className="text-sm text-slateink-600 font-medium leading-relaxed">
+                      Upload a photo of any receipt. I extract items, match them to a global food database, 
+                      and guess the shelf-life based on food science data.
+                    </p>
+                  </div>
+                </section>
+
+                <section>
+                  <h4 className="text-lg font-black text-slateink-800 mb-4 flex items-center gap-2">
+                    <Utensils className="w-5 h-5 text-amber-500" /> Dynamic Recipes
+                  </h4>
+                  <div className="bg-amber-50 rounded-2xl p-4 border border-amber-100">
+                    <p className="text-sm text-amber-800 font-medium leading-relaxed">
+                      I don't just give recipes; I prioritize ingredients that are 
+                      <strong> expiring first</strong>. Save money and the planet, one meal at a time.
+                    </p>
+                  </div>
+                </section>
+
+                <div className="p-6 rounded-3xl bg-slateink-900 text-white text-center">
+                  <p className="text-sm font-medium opacity-80 mb-4">Ready to start your zero-waste journey?</p>
+                  <button onClick={() => { setIsAiDrawerOpen(false); onGetStarted(); }} className="w-full py-3 rounded-xl bg-emerald-500 font-bold hover:bg-emerald-400 transition-colors shadow-lg shadow-emerald-900/20">
+                    Activate My AI Chef
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+          </AnimatePresence>
+
+          {/* Floating AI Trigger */}
+          <motion.button 
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+            onClick={() => setIsAiDrawerOpen(true)}
+            className="fixed bottom-8 right-8 z-40 flex items-center gap-3 bg-white text-slateink-900 px-6 py-4 rounded-full shadow-2xl border border-emerald-100 font-black text-sm hover:shadow-emerald-200 transition-all group"
+          >
+            <div className="w-8 h-8 rounded-full bg-emerald-500 flex items-center justify-center text-white shadow-inner">
+              <ChefHat className="w-4 h-4" />
+            </div>
+            <span>Ask AI Co-Chef</span>
+            <ChevronRight className="w-4 h-4 text-emerald-500 group-hover:translate-x-1 transition-transform" />
+          </motion.button>
+        </div>
+      </section>
+
+      <footer className="border-t border-emerald-50 bg-white py-12">
+        <div className="max-w-7xl mx-auto px-6 lg:px-12 flex flex-col sm:flex-row items-center justify-between gap-6">
+          <div className="flex items-center gap-3">
+            <div className="flex items-center justify-center w-8 h-8 rounded-xl bg-emerald-500">
+              <Leaf className="w-4 h-4 text-white" strokeWidth={2.5} />
+            </div>
+            <span className="font-black text-slateink-800">FreshSaver</span>
+          </div>
+          <div className="flex items-center gap-8">
+            <a href="#" className="text-xs font-bold text-slateink-400 hover:text-emerald-600 transition-colors">Privacy Policy</a>
+            <a href="#" className="text-xs font-bold text-slateink-400 hover:text-emerald-600 transition-colors">Terms of Service</a>
+          </div>
+          <p className="text-xs text-slateink-400 font-medium italic">Track smarter, waste less. © 2026</p>
+        </div>
+      </footer>
+    </div>
+  );
+}
