@@ -44,10 +44,12 @@ export function AddItemModal({ categories, onClose, onAdd }: AddItemModalProps) 
     e.preventDefault();
     if (submitting) return;
 
+    // Never send empty/whitespace ids to Postgres — they must be null or a real UUID.
+    const safeCategoryId = categories.some((c) => c.id?.trim() === categoryId) ? categoryId : null;
     const qty = parseFloat(quantity);
     const result = foodItemSchema.safeParse({
       name: name.trim(),
-      category_id: categoryId,
+      category_id: safeCategoryId,
       quantity: qty,
       unit,
       expires_at: addDaysToDate(effectiveDays),
@@ -157,7 +159,11 @@ export function AddItemModal({ categories, onClose, onAdd }: AddItemModalProps) 
                     <button
                       key={cat.id}
                       type="button"
-                      onClick={() => { setCategoryId(isSelected ? null : cat.id); setError(''); }}
+                      onClick={() => {
+                        const nextCategoryId = cat.id?.trim() ? cat.id : null;
+                        setCategoryId(isSelected ? null : nextCategoryId);
+                        setError('');
+                      }}
                       aria-pressed={isSelected}
                       className={`flex items-center gap-1.5 rounded-xl py-2.5 px-3 text-xs font-bold transition-all duration-200 active:scale-95 border-2 ${
                         isSelected

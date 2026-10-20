@@ -267,6 +267,11 @@ export function Dashboard() {
     name: string; category_id: string | null; quantity: number; unit: FoodItem['unit']; expires_at: string;
     storage_location: StorageLocation; // Added storage_location
   }) => {
+    if (!householdId) {
+      const message = 'No household found for this account. Please refresh or sign in again.';
+      toast.error(message);
+      throw new Error(message);
+    }
     try {
       const saved = await insertFoodItem(householdId, userId, item);
       setItems((prev) => [...prev, saved]);
@@ -281,6 +286,11 @@ export function Dashboard() {
     name: string; category_id: string | null; quantity: number; unit: FoodUnit; expires_at: string;
     storage_location: StorageLocation; // Added storage_location
   }>) => {
+    if (!householdId) {
+      const message = 'No household found for this account. Please refresh or sign in again.';
+      toast.error(message);
+      throw new Error(message);
+    }
     try {
       const saved = await insertFoodItemsBulk(householdId, userId, items);
       setItems((prev) => [...prev, ...saved]);
