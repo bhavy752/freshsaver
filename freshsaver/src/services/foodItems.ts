@@ -99,6 +99,59 @@ async function resolveHouseholdId(
   }
 }
 
+interface FoodItemInsertInput {
+  name: string;
+  category_id: string | null;
+  quantity: number;
+  unit: FoodUnit;
+  expires_at: string;
+  storage_location: StorageLocation;
+  original_quantity?: number;
+  estimated_cost?: number;
+  barcode?: string;
+}
+
+interface FoodItemInsertRow {
+  household_id?: string;
+  added_by: string | null;
+  name: string;
+  category_id: string | null;
+  quantity: number;
+  unit: FoodUnit;
+  expires_at: string;
+  storage_location: StorageLocation;
+  original_quantity?: number;
+  estimated_cost?: number;
+  barcode: string | null;
+}
+
+/**
+ * Build an insert payload.
+ *
+ * When no household could be resolved, the `household_id` key is omitted
+ * entirely (instead of sending an empty/invalid UUID). The latest schema
+ * allows this, and the row remains owned through `added_by`.
+ */
+function buildInsertRow(
+  householdId: string | null,
+  addedBy: string | null,
+  item: FoodItemInsertInput
+): FoodItemInsertRow {
+  return {
+    ...(householdId ? { household_id: householdId } : {}),
+    added_by: addedBy,
+    name: item.name.trim(),
+    category_id: sanitizeUuid(item.category_id, 'category_id'),
+    quantity: item.quantity,
+    unit: item.unit,
+    expires_at: item.expires_at,
+    storage_location: item.storage_location,
+    original_quantity: item.original_quantity,
+    estimated_cost: item.estimated_cost,
+    barcode: item.barcode?.trim() || null,
+  };
+}
+
 interface SupabaseInsertError {
   message: string;
   code?: string;
@@ -119,7 +172,7 @@ function toInsertError(action: string, error: SupabaseInsertError): Error {
     return new Error(`${action}: one of the selected identifiers was invalid. Please refresh and try again.`);
   }
   if (error.code === '23502') {
-    return new Error(`${action}: your household context is missing. Please sign in again.`);
+    return new Error(`${action}: a required value was missing. Please try again.`);
   }
   if (error.code === '23503') {
     return new Error(`${action}: the selected category or household no longer exists.`);
@@ -176,40 +229,14 @@ export async function fetchFoodItems(
 export async function insertFoodItem(
   householdId: string | null | undefined,
   addedBy: string | null | undefined,
-  item: {
-    name: string;
-    category_id: string | null;
-    quantity: number;
-    unit: FoodUnit;
-    expires_at: string;
-    storage_location: StorageLocation;
-    original_quantity?: number;
-    estimated_cost?: number;
-    barcode?: string;
-  }
+  item: FoodItemInsertInput
 ): Promise<FoodItem> {
   const safeAddedBy = sanitizeUuid(addedBy, 'added_by');
   const safeHouseholdId = await resolveHouseholdId(householdId, safeAddedBy);
 
-  if (!safeHouseholdId && !safeAddedBy) {
-    throw new Error('Failed to add food item: your account context is missing. Please sign in again.');
-  }
-
   const { data, error } = await supabase
     .from('food_items')
-    .insert({
-      household_id: safeHouseholdId,
-      added_by: safeAddedBy,
-      name: item.name.trim(),
-      category_id: sanitizeUuid(item.category_id, 'category_id'),
-      quantity: item.quantity,
-      unit: item.unit,
-      expires_at: item.expires_at,
-      storage_location: item.storage_location,
-      original_quantity: item.original_quantity,
-      estimated_cost: item.estimated_cost,
-      barcode: item.barcode?.trim() || null,
-    })
+    .insert(buildInsertRow(safeHouseholdId, safeAddedBy, item))
     .select(FOOD_ITEM_SELECT)
     .maybeSingle();
 
@@ -279,38 +306,12 @@ export async function deleteFoodItem(id: string): Promise<void> {
 export async function insertFoodItemsBulk(
   householdId: string | null | undefined,
   addedBy: string | null | undefined,
-  items: Array<{
-    name: string;
-    category_id: string | null;
-    quantity: number;
-    unit: FoodUnit;
-    expires_at: string;
-    storage_location: StorageLocation;
-    original_quantity?: number;
-    estimated_cost?: number;
-    barcode?: string;
-  }>
+  items: FoodItemInsertInput[]
 ): Promise<FoodItem[]> {
   const safeAddedBy = sanitizeUuid(addedBy, 'added_by');
   const safeHouseholdId = await resolveHouseholdId(householdId, safeAddedBy);
 
-  if (!safeHouseholdId && !safeAddedBy) {
-    throw new Error('Failed to add food items: your account context is missing. Please sign in again.');
-  }
-
-  const rows = items.map((item) => ({
-    household_id: safeHouseholdId,
-    added_by: safeAddedBy,
-    name: item.name.trim(),
-    category_id: sanitizeUuid(item.category_id, 'category_id'),
-    quantity: item.quantity,
-    unit: item.unit,
-    expires_at: item.expires_at,
-    storage_location: item.storage_location,
-    original_quantity: item.original_quantity,
-    estimated_cost: item.estimated_cost,
-    barcode: item.barcode?.trim() || null,
-  }));
+  const rows = items.map((item) => buildInsertRow(safeHouseholdId, safeAddedBy, item));
 
   const { data, error } = await supabase
     .from('food_items')

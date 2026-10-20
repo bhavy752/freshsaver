@@ -119,10 +119,18 @@ describe('insertFoodItem household resolution', () => {
     const saved = await insertFoodItem('', USER_ID, ITEM_INPUT);
 
     expect(saved.household_id).toBeNull();
-    expect(mocks.insert).toHaveBeenCalledWith(
-      expect.objectContaining({ household_id: null, added_by: USER_ID })
-    );
+    const payload = mocks.insert.mock.calls[0]?.[0];
+    expect(payload).toMatchObject({ added_by: USER_ID });
+    expect(payload).not.toHaveProperty('household_id');
     expect(warn).toHaveBeenCalled();
     warn.mockRestore();
+  });
+
+  it('never blocks insertion with a strict household validation error', async () => {
+    mockInsertReturning(null);
+
+    await expect(insertFoodItem(null, null, ITEM_INPUT)).resolves.toBeDefined();
+    const payload = mocks.insert.mock.calls[0]?.[0];
+    expect(payload).not.toHaveProperty('household_id');
   });
 });
