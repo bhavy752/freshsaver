@@ -100,8 +100,8 @@ export function Dashboard() {
   }, []);
 
   const loadData = useCallback(async () => {
-    if (!householdId) {
-      // No household resolved yet — clear the loader so the UI never hangs.
+    if (!householdId && !userId) {
+      // No user or household resolved yet — clear the loader so the UI never hangs.
       setLoading(false);
       setItems([]);
       setRecipes([]);
@@ -112,9 +112,10 @@ export function Dashboard() {
     setError(null);
     try {
       const [foodItems, recipeList, grocery, cats] = await Promise.all([
-        fetchFoodItems(householdId),
-        fetchRecipes(householdId),
-        fetchGroceryList(householdId),
+        // Also loads fallback items saved under the user when no household exists.
+        fetchFoodItems(householdId, userId),
+        householdId ? fetchRecipes(householdId) : Promise.resolve([]),
+        householdId ? fetchGroceryList(householdId) : Promise.resolve([]),
         fetchCategories(),
       ]);
 
@@ -122,27 +123,29 @@ export function Dashboard() {
       let inventory = foodItems;
 
       // Seed once per household (and only when the inventory is genuinely empty).
-      const seedKey = `freshsaver:seeded:${householdId}`;
-      let alreadySeeded = false;
-      try {
-        alreadySeeded = window.localStorage.getItem(seedKey) === 'true';
-      } catch {
-        // Private browsing / storage disabled — seed based on the empty inventory only.
-      }
-
-      if (inventory.length === 0 && !alreadySeeded && !seededRef.current && userId) {
-        seededRef.current = true;
+      if (householdId) {
+        const seedKey = `freshsaver:seeded:${householdId}`;
+        let alreadySeeded = false;
         try {
-          inventory = await seedSampleData(householdId, userId, cats);
+          alreadySeeded = window.localStorage.getItem(seedKey) === 'true';
+        } catch {
+          // Private browsing / storage disabled — seed based on the empty inventory only.
+        }
+
+        if (inventory.length === 0 && !alreadySeeded && !seededRef.current && userId) {
+          seededRef.current = true;
           try {
-            window.localStorage.setItem(seedKey, 'true');
-          } catch {
-            // Ignore storage failures.
+            inventory = await seedSampleData(householdId, userId, cats);
+            try {
+              window.localStorage.setItem(seedKey, 'true');
+            } catch {
+              // Ignore storage failures.
+            }
+            toast.success('Added a few sample items to get you started 🍎');
+          } catch (seedErr) {
+            seededRef.current = false;
+            console.warn('Sample data seeding skipped:', seedErr);
           }
-          toast.success('Added a few sample items to get you started 🍎');
-        } catch (seedErr) {
-          seededRef.current = false;
-          console.warn('Sample data seeding skipped:', seedErr);
         }
       }
 
@@ -267,15 +270,16 @@ export function Dashboard() {
     name: string; category_id: string | null; quantity: number; unit: FoodItem['unit']; expires_at: string;
     storage_location: StorageLocation; // Added storage_location
   }) => {
-    if (!householdId) {
-      const message = 'No household found for this account. Please refresh or sign in again.';
-      toast.error(message);
-      throw new Error(message);
-    }
+    const hadNoHousehold = !householdId;
     try {
+      // The service resolves the profile household or creates a Personal Pantry.
       const saved = await insertFoodItem(householdId, userId, item);
       setItems((prev) => [...prev, saved]);
-      toast.success(`${item.name} added to inventory`);
+      if (hadNoHousehold) {
+        toast.success(`${item.name} added to your Personal Pantry 🌿`);
+      } else {
+        toast.success(`${item.name} added to inventory`);
+      }
     } catch (err) {
       toast.error(err instanceof Error ? err.message : 'Failed to add item');
       throw err;
@@ -286,14 +290,14 @@ export function Dashboard() {
     name: string; category_id: string | null; quantity: number; unit: FoodUnit; expires_at: string;
     storage_location: StorageLocation; // Added storage_location
   }>) => {
-    if (!householdId) {
-      const message = 'No household found for this account. Please refresh or sign in again.';
-      toast.error(message);
-      throw new Error(message);
-    }
+    const hadNoHousehold = !householdId;
     try {
+      // The service resolves the profile household or creates a Personal Pantry.
       const saved = await insertFoodItemsBulk(householdId, userId, items);
       setItems((prev) => [...prev, ...saved]);
+      if (hadNoHousehold) {
+        toast.success(`Added ${saved.length} item${saved.length === 1 ? '' : 's'} to your Personal Pantry 🌿`);
+      }
     } catch (err) {
       toast.error(err instanceof Error ? err.message : 'Failed to add items');
       throw err;
@@ -499,7 +503,7 @@ export function Dashboard() {
                   FreshSaver <span className="text-xl lg:text-2xl">🥗</span>
                 </h1>
                 <p className="text-xs text-slate-400 font-medium mt-0.5 lg:text-sm">
-                  Hi, {userName} · {household?.name ?? 'Household'}
+                  Hi, {userName} · {household?.name ?? 'Personal Pantry'}
                 </p>
               </div>
             </div>

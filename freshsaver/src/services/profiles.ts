@@ -122,15 +122,61 @@ export async function createHousehold(
   familyMembersCount: number
 ): Promise<Household> {
   const joinCode = generateJoinCode();
-  const { data, error } = await supabase
+  const household: Household = {
+    id: generateUuid(),
+    name,
+    family_members_count: familyMembersCount,
+    join_code: joinCode,
+    created_at: new Date().toISOString(),
+  };
+
+  // Supply the id ourselves and skip `.select()`. The households SELECT policy
+  // only exposes a household after the profile is linked to it, so a normal
+  // `insert().select()` would return no row while the profile is still unset.
+  const { error } = await supabase
     .from('households')
-    .insert({ name, family_members_count: familyMembersCount, join_code: joinCode })
-    .select('id, name, family_members_count, join_code, created_at')
-    .maybeSingle();
+    .insert({
+      id: household.id,
+      name: household.name,
+      family_members_count: household.family_members_count,
+      join_code: household.join_code,
+      created_at: household.created_at,
+    });
 
   if (error) throw new Error(`Failed to create household: ${error.message}`);
-  if (!data) throw new Error('Failed to create household: no data returned');
-  return data as Household;
+  return household;
+}
+
+/** In-flight household creation keyed by user, so parallel inserts only create one. */
+const householdCreationPromises = new Map<string, Promise<string | null>>();
+
+/**
+ * Resolve the household for a user, creating a default "Personal Pantry"
+ * household and linking it to their profile when they do not have one yet.
+ *
+ * Returns `null` when no household can be resolved, allowing callers to fall
+ * back to saving data under the user's own id.
+ */
+export async function ensureHouseholdForUser(userId: string): Promise<string | null> {
+  const existing = householdCreationPromises.get(userId);
+  if (existing) return existing;
+
+  const promise = (async () => {
+    const profile = await fetchProfile(userId);
+    if (profile?.household_id) return profile.household_id;
+    if (!profile) {
+      throw new Error('Cannot create a household without a profile');
+    }
+
+    const household = await createHousehold('Personal Pantry', 1);
+    await updateProfileHousehold(userId, household.id);
+    return household.id;
+  })().finally(() => {
+    householdCreationPromises.delete(userId);
+  });
+
+  householdCreationPromises.set(userId, promise);
+  return promise;
 }
 
 export async function fetchHouseholdByJoinCode(joinCode: string): Promise<Household | null> {
@@ -174,4 +220,17 @@ function generateJoinCode(): string {
     code += chars[Math.floor(Math.random() * chars.length)];
   }
   return code;
+}
+
+function generateUuid(): string {
+  if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') {
+    return crypto.randomUUID();
+  }
+
+  // Fallback for environments without crypto.randomUUID (older browsers/tests).
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (char) => {
+    const random = (Math.random() * 16) | 0;
+    const value = char === 'x' ? random : (random & 0x3) | 0x8;
+    return value.toString(16);
+  });
 }

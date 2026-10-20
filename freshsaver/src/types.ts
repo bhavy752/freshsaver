@@ -33,7 +33,7 @@ export type StorageLocation = 'fridge' | 'pantry' | 'freezer';
 
 export interface FoodItem {
   id: string;
-  household_id: string;
+  household_id: string | null;
   added_by: string | null;
   category_id: string | null;
   category?: Category | null;

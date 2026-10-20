@@ -294,6 +294,9 @@ export function AddItemModal({ categories, onClose, onAdd }: AddItemModalProps) 
 
           {/* Sticky footer: always visible, never clipped by the scroll area */}
           <div className="sticky bottom-0 shrink-0 border-t border-emerald-100 bg-white/95 backdrop-blur-md p-4 pb-[max(1rem,env(safe-area-inset-bottom))] shadow-[0_-8px_24px_-16px_rgba(16,185,129,0.5)]">
+            <p className="text-center text-[11px] font-medium text-slate-500 mb-2">
+              No pantry yet? We&apos;ll create a Personal Pantry automatically 🌿
+            </p>
             <button
               type="submit"
               disabled={submitting}

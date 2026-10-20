@@ -1,9 +1,10 @@
 import { supabase } from '@/lib/supabase';
+import { ensureHouseholdForUser } from '@/services/profiles';
 import type { FoodItem, FoodUnit, FoodItemStatus, StorageLocation, Category } from '@/types';
 
 interface FoodItemRow {
   id: string;
-  household_id: string;
+  household_id: string | null;
   added_by: string | null;
   category_id: string | null;
   name: string;
@@ -66,6 +67,38 @@ export function sanitizeUuid(value: string | null | undefined, fieldName = 'iden
   return trimmed;
 }
 
+/**
+ * Resolve the household an item should be inserted into.
+ *
+ * - Uses the supplied household when it is a valid UUID.
+ * - Otherwise looks the household up on the user's profile.
+ * - Creates a default "Personal Pantry" and links it to the profile when the
+ *   user does not have a household yet.
+ * - Returns `null` when neither is possible, so the item can still be saved
+ *   under `added_by` alone (the database schema and RLS allow this).
+ */
+async function resolveHouseholdId(
+  householdId: string | null | undefined,
+  addedBy: string | null | undefined
+): Promise<string | null> {
+  const directHouseholdId = sanitizeUuid(householdId, 'household_id');
+  if (directHouseholdId) return directHouseholdId;
+
+  const safeAddedBy = sanitizeUuid(addedBy, 'added_by');
+  if (!safeAddedBy) return null;
+
+  try {
+    const ensured = await ensureHouseholdForUser(safeAddedBy);
+    return sanitizeUuid(ensured, 'household_id');
+  } catch (error) {
+    console.warn(
+      '[foodItems] Could not find or create a household; saving the item under the user instead.',
+      error
+    );
+    return null;
+  }
+}
+
 interface SupabaseInsertError {
   message: string;
   code?: string;
@@ -98,15 +131,46 @@ function toInsertError(action: string, error: SupabaseInsertError): Error {
   return new Error(`${action}: ${error.message}`);
 }
 
-export async function fetchFoodItems(householdId: string): Promise<FoodItem[]> {
-  const { data, error } = await supabase
-    .from('food_items')
-    .select(FOOD_ITEM_SELECT)
-    .eq('household_id', householdId)
-    .order('expires_at', { ascending: true });
+export async function fetchFoodItems(
+  householdId: string | null | undefined,
+  userId?: string | null
+): Promise<FoodItem[]> {
+  const safeHouseholdId = sanitizeUuid(householdId, 'household_id');
+  const safeUserId = sanitizeUuid(userId, 'added_by');
 
-  if (error) throw new Error(`Failed to load food items: ${error.message}`);
-  return (data ?? []).map(rowToItem);
+  const rows: FoodItemRow[] = [];
+
+  if (safeHouseholdId) {
+    const { data, error } = await supabase
+      .from('food_items')
+      .select(FOOD_ITEM_SELECT)
+      .eq('household_id', safeHouseholdId)
+      .order('expires_at', { ascending: true });
+
+    if (error) throw new Error(`Failed to load food items: ${error.message}`);
+    rows.push(...((data ?? []) as FoodItemRow[]));
+  }
+
+  // Items saved as a fallback before a household existed are scoped to their
+  // owner instead. Include them so they remain visible after a refresh.
+  if (safeUserId) {
+    const { data, error } = await supabase
+      .from('food_items')
+      .select(FOOD_ITEM_SELECT)
+      .is('household_id', null)
+      .eq('added_by', safeUserId)
+      .order('expires_at', { ascending: true });
+
+    if (error) throw new Error(`Failed to load food items: ${error.message}`);
+    rows.push(...((data ?? []) as FoodItemRow[]));
+  }
+
+  const uniqueRows = Array.from(new Map(rows.map((row) => [row.id, row])).values());
+  uniqueRows.sort(
+    (a, b) => new Date(a.expires_at).getTime() - new Date(b.expires_at).getTime()
+  );
+
+  return uniqueRows.map(rowToItem);
 }
 
 export async function insertFoodItem(
@@ -124,11 +188,18 @@ export async function insertFoodItem(
     barcode?: string;
   }
 ): Promise<FoodItem> {
+  const safeAddedBy = sanitizeUuid(addedBy, 'added_by');
+  const safeHouseholdId = await resolveHouseholdId(householdId, safeAddedBy);
+
+  if (!safeHouseholdId && !safeAddedBy) {
+    throw new Error('Failed to add food item: your account context is missing. Please sign in again.');
+  }
+
   const { data, error } = await supabase
     .from('food_items')
     .insert({
-      household_id: sanitizeUuid(householdId, 'household_id'),
-      added_by: sanitizeUuid(addedBy, 'added_by'),
+      household_id: safeHouseholdId,
+      added_by: safeAddedBy,
       name: item.name.trim(),
       category_id: sanitizeUuid(item.category_id, 'category_id'),
       quantity: item.quantity,
@@ -220,8 +291,12 @@ export async function insertFoodItemsBulk(
     barcode?: string;
   }>
 ): Promise<FoodItem[]> {
-  const safeHouseholdId = sanitizeUuid(householdId, 'household_id');
   const safeAddedBy = sanitizeUuid(addedBy, 'added_by');
+  const safeHouseholdId = await resolveHouseholdId(householdId, safeAddedBy);
+
+  if (!safeHouseholdId && !safeAddedBy) {
+    throw new Error('Failed to add food items: your account context is missing. Please sign in again.');
+  }
 
   const rows = items.map((item) => ({
     household_id: safeHouseholdId,
