@@ -3,8 +3,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { X, Plus, Check, Package, Sparkles } from 'lucide-react';
 import type { Category, FoodUnit, StorageLocation } from '@/types';
 import { UNIT_OPTIONS, addDaysToDate } from '@/utils';
-import { foodItemSchema } from '@/validation';
 import { getCategoryVisuals, getFoodEmoji, STORAGE_VISUALS } from '@/utils/foodEmojis';
+import { useAuth } from '@/context/AuthContext';
 
 interface AddItemModalProps {
   categories: Category[];
@@ -17,11 +17,14 @@ interface AddItemModalProps {
     expires_at: string;
     storage_location: StorageLocation;
   }) => Promise<void>;
+  onItemAdded?: () => void;
 }
 
 const STORAGE_OPTIONS: StorageLocation[] = ['fridge', 'pantry', 'freezer'];
+const DEFAULT_EXPIRY_MS = 7 * 24 * 60 * 60 * 1000;
 
-export function AddItemModal({ categories, onClose, onAdd }: AddItemModalProps) {
+export function AddItemModal({ categories, onClose, onAdd, onItemAdded }: AddItemModalProps) {
+  const { user, household } = useAuth();
   const [name, setName] = useState('');
   const [categoryId, setCategoryId] = useState<string | null>(null);
   const [storageLocation, setStorageLocation] = useState<StorageLocation>('fridge');
@@ -40,37 +43,49 @@ export function AddItemModal({ categories, onClose, onAdd }: AddItemModalProps) 
     [effectiveDays]
   );
 
+  const resetForm = () => {
+    setName('');
+    setCategoryId(null);
+    setStorageLocation('fridge');
+    setQuantity('1');
+    setUnit('pcs');
+    setShelfLifeDays(7);
+    setError('');
+  };
+
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (submitting) return;
 
     // Never send empty/whitespace ids to Postgres — they must be null or a real UUID.
     const safeCategoryId = categories.some((c) => c.id?.trim() === categoryId) ? categoryId : null;
-    const qty = parseFloat(quantity);
-    const result = foodItemSchema.safeParse({
-      name: name.trim(),
-      category_id: safeCategoryId,
-      quantity: qty,
-      unit,
-      expires_at: addDaysToDate(effectiveDays),
-    });
+    const calculatedExpiryDate = addDaysToDate(effectiveDays);
+    const parsedQuantity = Number(quantity);
 
-    if (!result.success) {
-      setError(result.error.issues[0]?.message ?? 'Please check your inputs');
-      return;
-    }
+    const payload = {
+      name: name.trim() || 'Unnamed Item',
+      category_id: safeCategoryId || null,
+      quantity: Number.isFinite(parsedQuantity) && parsedQuantity > 0 ? parsedQuantity : 1,
+      unit: unit || 'pieces',
+      expires_at: calculatedExpiryDate || new Date(Date.now() + DEFAULT_EXPIRY_MS).toISOString(),
+      storage_location: storageLocation || 'pantry',
+      status: 'active' as const,
+      added_by: user?.id || null,
+      household_id: household?.id || null,
+    };
+
+    console.log('Submitting food item:', payload);
 
     setSubmitting(true);
     setError('');
     try {
-      await onAdd({
-        name: result.data.name,
-        category_id: result.data.category_id ?? null,
-        quantity: result.data.quantity,
-        unit: result.data.unit,
-        expires_at: result.data.expires_at,
-        storage_location: storageLocation,
-      });
+      await onAdd(payload);
+      try {
+        onItemAdded?.();
+      } catch (callbackError) {
+        console.error('onItemAdded callback failed:', callbackError);
+      }
+      resetForm();
       onClose();
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to add item');

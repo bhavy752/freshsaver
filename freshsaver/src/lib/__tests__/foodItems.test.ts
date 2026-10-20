@@ -83,6 +83,7 @@ describe('sanitizeUuid', () => {
 describe('insertFoodItem household resolution', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    vi.spyOn(console, 'log').mockImplementation(() => {});
   });
 
   it('uses a supplied household without looking up the profile', async () => {
@@ -120,8 +121,7 @@ describe('insertFoodItem household resolution', () => {
 
     expect(saved.household_id).toBeNull();
     const payload = mocks.insert.mock.calls[0]?.[0];
-    expect(payload).toMatchObject({ added_by: USER_ID });
-    expect(payload).not.toHaveProperty('household_id');
+    expect(payload).toMatchObject({ added_by: USER_ID, household_id: null });
     expect(warn).toHaveBeenCalled();
     warn.mockRestore();
   });
@@ -131,6 +131,31 @@ describe('insertFoodItem household resolution', () => {
 
     await expect(insertFoodItem(null, null, ITEM_INPUT)).resolves.toBeDefined();
     const payload = mocks.insert.mock.calls[0]?.[0];
-    expect(payload).not.toHaveProperty('household_id');
+    expect(payload).toMatchObject({ household_id: null, added_by: null });
+  });
+
+  it('fills in safe fallbacks for required payload values', async () => {
+    mockInsertReturning(VALID_UUID);
+
+    await insertFoodItem(VALID_UUID, USER_ID, {
+      ...ITEM_INPUT,
+      name: '   ',
+      quantity: 0,
+      expires_at: 'not-a-date',
+      unit: '' as unknown as typeof ITEM_INPUT.unit,
+      storage_location: '' as unknown as typeof ITEM_INPUT.storage_location,
+    });
+
+    const payload = mocks.insert.mock.calls[0]?.[0];
+    expect(payload).toMatchObject({
+      name: 'Unnamed Item',
+      quantity: 1,
+      unit: 'pieces',
+      storage_location: 'pantry',
+      status: 'active',
+      category_id: null,
+    });
+    expect(Date.parse(payload.expires_at)).not.toBeNaN();
+    expect(console.log).toHaveBeenCalledWith('Submitting food item:', payload);
   });
 });

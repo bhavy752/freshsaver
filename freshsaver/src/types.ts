@@ -28,7 +28,7 @@ export interface Category {
 
 /** `active` is the state stored in the database for items still in the pantry. */
 export type FoodItemStatus = 'active' | 'fresh' | 'expiring' | 'expired' | 'consumed' | 'wasted';
-export type FoodUnit = 'pcs' | 'kg' | 'liters' | 'packs' | 'bunches';
+export type FoodUnit = 'pcs' | 'pieces' | 'kg' | 'liters' | 'packs' | 'bunches';
 export type StorageLocation = 'fridge' | 'pantry' | 'freezer';
 
 export interface FoodItem {

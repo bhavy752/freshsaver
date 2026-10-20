@@ -4,14 +4,14 @@ export const foodItemSchema = z.object({
   name: z.string().min(1, 'Please enter a food name').max(100, 'Name is too long'),
   category_id: z.string().uuid().nullable().optional(),
   quantity: z.number().positive('Quantity must be greater than 0').max(10000, 'Quantity is too large'),
-  unit: z.enum(['pcs', 'kg', 'liters', 'packs', 'bunches']),
+  unit: z.enum(['pcs', 'pieces', 'kg', 'liters', 'packs', 'bunches']),
   expires_at: z.string().min(1, 'Expiry date is required'),
 });
 
 export const groceryItemSchema = z.object({
   item_name: z.string().min(1, 'Please enter an item name').max(100, 'Name is too long'),
   suggested_quantity: z.number().positive('Quantity must be greater than 0').max(10000, 'Quantity is too large'),
-  unit: z.enum(['pcs', 'kg', 'liters', 'packs', 'bunches']),
+  unit: z.enum(['pcs', 'pieces', 'kg', 'liters', 'packs', 'bunches']),
 });
 
 export const recipeSchema = z.object({

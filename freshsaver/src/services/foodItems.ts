@@ -112,12 +112,13 @@ interface FoodItemInsertInput {
 }
 
 interface FoodItemInsertRow {
-  household_id?: string;
+  household_id: string | null;
   added_by: string | null;
   name: string;
   category_id: string | null;
   quantity: number;
   unit: FoodUnit;
+  status: 'active';
   expires_at: string;
   storage_location: StorageLocation;
   original_quantity?: number;
@@ -125,27 +126,40 @@ interface FoodItemInsertRow {
   barcode: string | null;
 }
 
+const VALID_UNITS: FoodUnit[] = ['pcs', 'pieces', 'kg', 'liters', 'packs', 'bunches'];
+const VALID_STORAGE_LOCATIONS: StorageLocation[] = ['fridge', 'pantry', 'freezer'];
+const DEFAULT_EXPIRY_MS = 7 * 24 * 60 * 60 * 1000;
+
 /**
- * Build an insert payload.
- *
- * When no household could be resolved, the `household_id` key is omitted
- * entirely (instead of sending an empty/invalid UUID). The latest schema
- * allows this, and the row remains owned through `added_by`.
+ * Build an insert payload with a safe fallback for every required column.
+ * This is deliberately defensive: a malformed or missing form value should
+ * never turn into a NOT NULL / invalid-input error from Postgres.
  */
 function buildInsertRow(
   householdId: string | null,
   addedBy: string | null,
   item: FoodItemInsertInput
 ): FoodItemInsertRow {
+  const parsedQuantity = Number(item.quantity);
+  const safeQuantity = Number.isFinite(parsedQuantity) && parsedQuantity > 0 ? parsedQuantity : 1;
+  const safeUnit = VALID_UNITS.includes(item.unit) ? item.unit : 'pieces';
+  const safeStorage = VALID_STORAGE_LOCATIONS.includes(item.storage_location)
+    ? item.storage_location
+    : 'pantry';
+  const safeExpiry = typeof item.expires_at === 'string' && !Number.isNaN(Date.parse(item.expires_at))
+    ? item.expires_at
+    : new Date(Date.now() + DEFAULT_EXPIRY_MS).toISOString();
+
   return {
-    ...(householdId ? { household_id: householdId } : {}),
-    added_by: addedBy,
-    name: item.name.trim(),
-    category_id: sanitizeUuid(item.category_id, 'category_id'),
-    quantity: item.quantity,
-    unit: item.unit,
-    expires_at: item.expires_at,
-    storage_location: item.storage_location,
+    household_id: householdId || null,
+    added_by: addedBy || null,
+    name: item.name?.trim() || 'Unnamed Item',
+    category_id: sanitizeUuid(item.category_id, 'category_id') || null,
+    quantity: safeQuantity,
+    unit: safeUnit,
+    status: 'active',
+    expires_at: safeExpiry,
+    storage_location: safeStorage,
     original_quantity: item.original_quantity,
     estimated_cost: item.estimated_cost,
     barcode: item.barcode?.trim() || null,
@@ -233,10 +247,13 @@ export async function insertFoodItem(
 ): Promise<FoodItem> {
   const safeAddedBy = sanitizeUuid(addedBy, 'added_by');
   const safeHouseholdId = await resolveHouseholdId(householdId, safeAddedBy);
+  const payload = buildInsertRow(safeHouseholdId, safeAddedBy, item);
+
+  console.log('Submitting food item:', payload);
 
   const { data, error } = await supabase
     .from('food_items')
-    .insert(buildInsertRow(safeHouseholdId, safeAddedBy, item))
+    .insert(payload)
     .select(FOOD_ITEM_SELECT)
     .maybeSingle();
 
@@ -310,8 +327,9 @@ export async function insertFoodItemsBulk(
 ): Promise<FoodItem[]> {
   const safeAddedBy = sanitizeUuid(addedBy, 'added_by');
   const safeHouseholdId = await resolveHouseholdId(householdId, safeAddedBy);
-
   const rows = items.map((item) => buildInsertRow(safeHouseholdId, safeAddedBy, item));
+
+  console.log('Submitting food items:', rows);
 
   const { data, error } = await supabase
     .from('food_items')

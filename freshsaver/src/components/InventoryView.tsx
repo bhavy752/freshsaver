@@ -409,6 +409,7 @@ export function InventoryView({ items, categories, streak, loading = false, onAd
           categories={categories}
           onClose={() => setShowAddModal(false)}
           onAdd={onAddItem}
+          onItemAdded={() => setActiveTab('all')}
         />
       )}
 
