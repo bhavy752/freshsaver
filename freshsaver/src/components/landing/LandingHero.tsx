@@ -62,7 +62,7 @@ export function LandingHero({ onGetStarted, onWatchDemo }: LandingHeroProps) {
 
           <motion.h1
             variants={fadeUp}
-            className="mt-6 text-balance text-[2.8rem] font-black leading-[0.99] tracking-[-0.055em] sm:text-6xl lg:text-[4.65rem]"
+            className="mt-6 text-balance text-[2.8rem] font-black leading-[1.15] tracking-[-0.055em] pb-3 sm:text-6xl lg:text-[4.65rem]"
           >
             Stop throwing away
             <span className="relative mt-1 block bg-gradient-to-r from-emerald-300 via-lime-200 to-amber-200 bg-clip-text text-transparent">

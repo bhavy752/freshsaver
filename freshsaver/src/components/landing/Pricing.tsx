@@ -35,7 +35,7 @@ export function Pricing({ onGetStarted }: PricingProps) {
   const annualTotal = (7.99 * 12).toFixed(2);
 
   return (
-    <section id="pricing" className="relative overflow-hidden bg-white py-20 sm:py-24 lg:py-28">
+    <section id="pricing" className="scroll-mt-28 relative overflow-hidden bg-white py-20 sm:py-24 lg:py-28">
       <div className="pointer-events-none absolute left-1/2 top-0 h-72 w-[42rem] -translate-x-1/2 rounded-full bg-emerald-100/55 blur-3xl" />
 
       <div className="relative mx-auto max-w-7xl px-5 lg:px-8">

@@ -29,7 +29,7 @@ export function SavingsCalculator({ onGetStarted }: SavingsCalculatorProps) {
   const sizeLabel = householdSize === 6 ? '6+' : String(householdSize);
 
   return (
-    <section id="savings" className="relative overflow-hidden bg-[#f8faf5] py-20 sm:py-24 lg:py-28">
+    <section id="savings" className="scroll-mt-28 relative overflow-hidden bg-[#f8faf5] py-20 sm:py-24 lg:py-28">
       <div className="pointer-events-none absolute -left-40 top-24 h-80 w-80 rounded-full bg-emerald-200/40 blur-3xl" />
       <div className="pointer-events-none absolute -right-32 bottom-0 h-96 w-96 rounded-full bg-amber-200/35 blur-3xl" />
 

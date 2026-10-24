@@ -53,8 +53,8 @@ export function InventoryFilters({
               className={cn(
                 'inline-flex shrink-0 items-center gap-1.5 rounded-full border px-3 py-2 text-[11px] font-bold transition-all',
                 active
-                  ? 'border-emerald-300 bg-emerald-500 text-white shadow-md shadow-emerald-500/20'
-                  : 'border-ink-100 bg-white text-ink-500 hover:border-emerald-200 hover:text-ink-800'
+                  ? 'border-emerald-400 bg-emerald-500 text-slate-950 shadow-lg shadow-emerald-500/30'
+                  : 'border-slate-700 bg-slate-800/50 text-slate-400 hover:border-emerald-400/50 hover:text-emerald-300'
               )}
             >
               <span aria-hidden="true">{filter.emoji}</span>
@@ -65,7 +65,7 @@ export function InventoryFilters({
       </div>
 
       <div className="flex flex-wrap items-center justify-between gap-2">
-        <div className="inline-flex rounded-xl border border-ink-100 bg-white p-1 shadow-sm">
+        <div className="inline-flex rounded-xl border border-slate-700 bg-slate-800/50 p-1 backdrop-blur-md">
           {expiryOptions.map((option) => {
             const active = expiry === option.key;
             return (
@@ -77,15 +77,15 @@ export function InventoryFilters({
                 className={cn(
                   'inline-flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-[10px] font-bold transition-all sm:px-3',
                   active
-                    ? 'bg-ink-950 text-white shadow-sm'
-                    : 'text-ink-500 hover:bg-ink-50 hover:text-ink-800'
+                    ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 shadow-sm'
+                    : 'text-slate-500 hover:bg-slate-700/50 hover:text-slate-200'
                 )}
               >
                 {option.label}
                 <span
                   className={cn(
                     'rounded-full px-1.5 py-0.5 text-[8px] font-black',
-                    active ? 'bg-white/15 text-white/80' : 'bg-ink-100 text-ink-500'
+                    active ? 'bg-emerald-400 text-slate-950' : 'bg-slate-700 text-slate-400'
                   )}
                 >
                   {option.count}
@@ -95,7 +95,7 @@ export function InventoryFilters({
           })}
         </div>
 
-        <p className="text-[10px] font-semibold text-ink-400">
+        <p className="text-[10px] font-semibold text-slate-500">
           Sorted by what needs rescuing first
         </p>
       </div>

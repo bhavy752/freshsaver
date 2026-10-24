@@ -97,7 +97,7 @@ export function FeaturesBento() {
   const nextRecipe = () => setRecipeIndex((index) => (index + 1) % RECIPES.length);
 
   return (
-    <section id="features" className="relative overflow-hidden bg-white py-20 sm:py-24 lg:py-28">
+    <section id="features" className="scroll-mt-28 relative overflow-hidden bg-white py-20 sm:py-24 lg:py-28">
       <div className="pointer-events-none absolute left-1/2 top-12 h-72 w-[44rem] -translate-x-1/2 rounded-full bg-emerald-100/50 blur-3xl" />
       <div className="relative mx-auto max-w-7xl px-5 lg:px-8">
         <SectionHeading

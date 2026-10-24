@@ -42,11 +42,11 @@ export function InventoryGrid({
           description="Scan your first receipt or add an item manually. FreshSaver will track every expiry date and turn what needs eating into a rescue recipe."
           action={
             <div className="flex flex-wrap justify-center gap-2">
-              <Button onClick={onScan}>
+              <Button onClick={onScan} className="bg-emerald-400 text-slate-950 font-black shadow-lg shadow-emerald-500/30 hover:bg-emerald-300">
                 <ScanLine className="h-4 w-4" />
                 Scan a receipt
               </Button>
-              <Button variant="outline" onClick={onAdd}>
+              <Button variant="outline" onClick={onAdd} className="border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/10">
                 <Plus className="h-4 w-4" />
                 Add an item
               </Button>
@@ -67,11 +67,11 @@ export function InventoryGrid({
         }
         action={
           hasFilters ? (
-            <Button variant="outline" onClick={onClearFilters}>
+            <Button variant="outline" onClick={onClearFilters} className="border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/10">
               Clear filters
             </Button>
           ) : (
-            <Button onClick={onAdd}>
+            <Button onClick={onAdd} className="bg-emerald-400 text-slate-950 font-black shadow-lg shadow-emerald-500/30 hover:bg-emerald-300">
               <Plus className="h-4 w-4" />
               Add an item
             </Button>
@@ -82,7 +82,7 @@ export function InventoryGrid({
   }
 
   return (
-    <motion.div layout className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+    <motion.div layout className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
       <AnimatePresence mode="popLayout">
         {items.map((item) => (
           <InventoryItemCard

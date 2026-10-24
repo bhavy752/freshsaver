@@ -22,7 +22,7 @@ export function ShoppingItemRow({ item, onToggle, onRemove }: ShoppingItemRowPro
       transition={{ duration: 0.22 }}
       className={cn(
         'group flex items-center gap-3 px-3 py-2.5 transition-colors sm:px-4',
-        item.is_purchased ? 'bg-ink-50/40' : 'hover:bg-emerald-50/30'
+        item.is_purchased ? 'bg-slate-900/30' : 'hover:bg-emerald-500/10'
       )}
     >
       <motion.button
@@ -35,7 +35,7 @@ export function ShoppingItemRow({ item, onToggle, onRemove }: ShoppingItemRowPro
           'flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border-2 transition-all',
           item.is_purchased
             ? 'border-emerald-500 bg-emerald-500 text-white shadow-sm shadow-emerald-500/25'
-            : 'border-ink-200 bg-white text-transparent hover:border-emerald-400'
+            : 'border-slate-600 bg-slate-800 text-transparent hover:border-emerald-400'
         )}
       >
         <motion.span
@@ -47,7 +47,7 @@ export function ShoppingItemRow({ item, onToggle, onRemove }: ShoppingItemRowPro
         </motion.span>
       </motion.button>
 
-      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-cream-100 text-base">
+      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-slate-700 text-emerald-400">
         {categoryEmoji(null, item.category_name ?? item.item_name)}
       </span>
 
@@ -56,19 +56,19 @@ export function ShoppingItemRow({ item, onToggle, onRemove }: ShoppingItemRowPro
           <p
             className={cn(
               'truncate text-xs font-black transition-colors',
-              item.is_purchased ? 'text-ink-300 line-through' : 'text-ink-900'
+              item.is_purchased ? 'text-slate-500 line-through' : 'text-white'
             )}
           >
             {item.item_name}
           </p>
           {item.auto_generated ? (
-            <span className="inline-flex items-center gap-0.5 rounded-full border border-emerald-200 bg-emerald-50 px-1.5 py-0.5 text-[7px] font-black uppercase tracking-[0.08em] text-emerald-700">
+            <span className="inline-flex items-center gap-0.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-1.5 py-0.5 text-[7px] font-black uppercase tracking-[0.08em] text-emerald-300">
               <Sparkles className="h-2 w-2" />
               Auto
             </span>
           ) : null}
         </div>
-        <p className={cn('mt-0.5 text-[9px] font-semibold', item.is_purchased ? 'text-ink-300' : 'text-ink-400')}>
+        <p className={cn('mt-0.5 text-[9px] font-semibold', item.is_purchased ? 'text-slate-500' : 'text-slate-400')}>
           {item.suggested_quantity} {item.unit} · {item.category_name ?? 'Pantry'}
         </p>
       </div>
@@ -77,7 +77,7 @@ export function ShoppingItemRow({ item, onToggle, onRemove }: ShoppingItemRowPro
         type="button"
         onClick={() => onRemove(item)}
         aria-label={`Remove ${item.item_name}`}
-        className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg text-ink-300 opacity-60 transition-all hover:bg-coral-50 hover:text-coral-500 group-hover:opacity-100"
+        className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg text-slate-500 opacity-60 transition-all hover:bg-red-500/20 hover:text-red-400 group-hover:opacity-100"
       >
         <Trash2 className="h-3.5 w-3.5" />
       </button>

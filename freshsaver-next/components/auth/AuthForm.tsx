@@ -217,17 +217,17 @@ export function AuthForm({ mode }: { mode: AuthMode }) {
         animate={{ opacity: 1, y: 0 }}
         className="text-center"
       >
-        <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-600">
+        <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-emerald-500 text-white shadow-xl shadow-emerald-500/30">
           <MailCheck className="h-6 w-6" />
         </div>
-        <h1 className="mt-5 text-2xl font-black tracking-[-0.04em] text-ink-950">
+        <h1 className="mt-5 text-2xl font-black tracking-[-0.04em] text-white">
           Check your inbox
         </h1>
-        <p className="mt-2 text-sm font-medium leading-relaxed text-ink-500">
-          We sent a confirmation link to <span className="font-bold text-ink-800">{email}</span>.
+        <p className="mt-2 text-sm font-medium leading-relaxed text-slate-400">
+          We sent a confirmation link to <span className="font-bold text-emerald-200">{email}</span>.
           Tap it to finish creating your kitchen.
         </p>
-        <Button className="mt-6 w-full" onClick={() => setEmailSent(false)}>
+        <Button className="mt-6 w-full bg-emerald-400 text-slate-950 font-black hover:bg-emerald-300" onClick={() => setEmailSent(false)}>
           Back to sign up
         </Button>
       </motion.div>
@@ -238,13 +238,13 @@ export function AuthForm({ mode }: { mode: AuthMode }) {
     <div>
       <div className="flex items-start justify-between gap-4">
         <div>
-          <p className="text-[10px] font-black uppercase tracking-[0.2em] text-emerald-600">
+          <p className="text-[10px] font-black uppercase tracking-[0.2em] text-emerald-400">
             {isSignup ? 'Start fresh' : 'Welcome back'}
           </p>
-          <h1 className="mt-2 text-3xl font-black leading-[1.02] tracking-[-0.05em] text-ink-950">
+          <h1 className="mt-2 text-3xl font-black leading-[1.02] tracking-[-0.05em] text-white">
             {isSignup ? 'Build your kitchen brain.' : 'Your pantry missed you.'}
           </h1>
-          <p className="mt-2 text-sm font-medium leading-relaxed text-ink-500">
+          <p className="mt-2 text-sm font-medium leading-relaxed text-slate-400">
             {isSignup
               ? 'Create an account and turn every receipt into an organized, waste-free pantry.'
               : 'Sign in to see what needs rescuing, what’s in sync, and what’s for dinner.'}
@@ -253,15 +253,15 @@ export function AuthForm({ mode }: { mode: AuthMode }) {
       </div>
 
       {!configured ? (
-        <div className="mt-4 flex items-start gap-2 rounded-xl border border-amber-200 bg-amber-50/80 px-3 py-2.5 text-[11px] font-semibold leading-relaxed text-amber-800">
-          <Sparkles className="mt-0.5 h-3.5 w-3.5 shrink-0" />
+        <div className="mt-4 flex items-start gap-2 rounded-xl border border-amber-500/30 bg-amber-500/10 px-3 py-2.5 text-[11px] font-semibold leading-relaxed text-amber-300">
+          <Sparkles className="mt-0.5 h-3.5 w-3.5 shrink-0 text-amber-400" />
           Demo mode is active. Add Supabase keys to enable real accounts and sync.
         </div>
       ) : null}
 
       <Button
         variant="outline"
-        className="mt-5 h-11 w-full bg-white/80"
+        className="mt-5 h-11 w-full bg-slate-900/60 backdrop-blur-md border-emerald-500/30 text-emerald-300 hover:bg-emerald-500/20 hover:text-emerald-100 transition-all"
         onClick={handleGoogle}
         disabled={googleLoading || loading}
       >
@@ -270,17 +270,17 @@ export function AuthForm({ mode }: { mode: AuthMode }) {
       </Button>
 
       <div className="my-5 flex items-center gap-3">
-        <span className="h-px flex-1 bg-ink-100" />
-        <span className="text-[9px] font-black uppercase tracking-[0.16em] text-ink-400">
+        <span className="h-px flex-1 bg-slate-700" />
+        <span className="text-[9px] font-black uppercase tracking-[0.16em] text-slate-500">
           or continue with email
         </span>
-        <span className="h-px flex-1 bg-ink-100" />
+        <span className="h-px flex-1 bg-slate-700" />
       </div>
 
       <form onSubmit={handleSubmit} noValidate className="space-y-4">
         {isSignup ? (
           <div className="space-y-1.5">
-            <Label htmlFor="fullName">Your name</Label>
+            <Label htmlFor="fullName" className="text-xs font-black text-slate-300">Your name</Label>
             <Input
               id="fullName"
               name="name"
@@ -290,9 +290,10 @@ export function AuthForm({ mode }: { mode: AuthMode }) {
               onChange={(event) => setFullName(event.target.value)}
               aria-invalid={Boolean(fieldErrors.fullName)}
               aria-describedby={fieldErrors.fullName ? 'fullName-error' : undefined}
+              className="bg-slate-900/40 border-slate-700 text-white placeholder-slate-500 focus:border-emerald-400 focus:ring-emerald-500/30"
             />
             {fieldErrors.fullName ? (
-              <p id="fullName-error" className="text-[11px] font-semibold text-coral-500">
+              <p id="fullName-error" className="text-[11px] font-semibold text-red-400">
                 {fieldErrors.fullName}
               </p>
             ) : null}
@@ -300,9 +301,9 @@ export function AuthForm({ mode }: { mode: AuthMode }) {
         ) : null}
 
         <div className="space-y-1.5">
-          <Label htmlFor="email">Email address</Label>
+          <Label htmlFor="email" className="text-xs font-black text-slate-300">Email address</Label>
           <div className="relative">
-            <Mail className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-ink-300" />
+            <Mail className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-500" />
             <Input
               id="email"
               name="email"
@@ -310,7 +311,7 @@ export function AuthForm({ mode }: { mode: AuthMode }) {
               autoComplete="email"
               inputMode="email"
               placeholder="you@kitchen.com"
-              className="pl-10"
+              className="pl-10 bg-slate-900/40 border-slate-700 text-white placeholder-slate-500 focus:border-emerald-400 focus:ring-emerald-500/30"
               value={email}
               onChange={(event) => setEmail(event.target.value)}
               aria-invalid={Boolean(fieldErrors.email)}
@@ -318,7 +319,7 @@ export function AuthForm({ mode }: { mode: AuthMode }) {
             />
           </div>
           {fieldErrors.email ? (
-            <p id="email-error" className="text-[11px] font-semibold text-coral-500">
+            <p id="email-error" className="text-[11px] font-semibold text-red-400">
               {fieldErrors.email}
             </p>
           ) : null}
@@ -326,12 +327,12 @@ export function AuthForm({ mode }: { mode: AuthMode }) {
 
         <div className="space-y-1.5">
           <div className="flex items-center justify-between">
-            <Label htmlFor="password">Password</Label>
+            <Label htmlFor="password" className="text-xs font-black text-slate-300">Password</Label>
             {!isSignup ? (
               <button
                 type="button"
                 onClick={handleForgotPassword}
-                className="text-[10px] font-bold text-emerald-600 transition-colors hover:text-emerald-700"
+                className="text-[10px] font-bold text-emerald-400 transition-colors hover:text-emerald-200"
               >
                 Forgot password?
               </button>
@@ -344,7 +345,7 @@ export function AuthForm({ mode }: { mode: AuthMode }) {
               type={showPassword ? 'text' : 'password'}
               autoComplete={isSignup ? 'new-password' : 'current-password'}
               placeholder={isSignup ? 'At least 8 characters' : 'Your password'}
-              className="pr-11"
+              className="pr-11 bg-slate-900/40 border-slate-700 text-white placeholder-slate-500 focus:border-emerald-400 focus:ring-emerald-500/30"
               value={password}
               onChange={(event) => setPassword(event.target.value)}
               aria-invalid={Boolean(fieldErrors.password)}
@@ -354,13 +355,13 @@ export function AuthForm({ mode }: { mode: AuthMode }) {
               type="button"
               onClick={() => setShowPassword((visible) => !visible)}
               aria-label={showPassword ? 'Hide password' : 'Show password'}
-              className="absolute right-2.5 top-1/2 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-lg text-ink-400 transition-colors hover:bg-ink-50 hover:text-ink-700"
+              className="absolute right-2.5 top-1/2 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-lg text-slate-400 transition-colors hover:bg-slate-800 hover:text-white"
             >
               {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
             </button>
           </div>
           {fieldErrors.password ? (
-            <p id="password-error" className="text-[11px] font-semibold text-coral-500">
+            <p id="password-error" className="text-[11px] font-semibold text-red-400">
               {fieldErrors.password}
             </p>
           ) : null}
@@ -373,10 +374,11 @@ export function AuthForm({ mode }: { mode: AuthMode }) {
                     ? 'bg-emerald-500'
                     : strength >= 40
                       ? 'bg-amber-400'
-                      : 'bg-coral-500'
+                      : 'bg-red-500'
                 }
+                className="h-1.5 bg-slate-700 overflow-hidden rounded-full"
               />
-              <p className="text-[10px] font-semibold text-ink-400">
+              <p className="text-[10px] font-semibold text-slate-400">
                 {strength >= 70
                   ? 'Strong password'
                   : strength >= 40
@@ -393,33 +395,33 @@ export function AuthForm({ mode }: { mode: AuthMode }) {
               initial={{ opacity: 0, y: -6 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -6 }}
-              className="flex items-start gap-2 rounded-xl border border-coral-200 bg-coral-50 px-3 py-2.5 text-[11px] font-semibold leading-relaxed text-coral-600"
+              className="flex items-start gap-2 rounded-xl border border-red-500/30 bg-red-500/10 px-3 py-2.5 text-[11px] font-semibold leading-relaxed text-red-300"
               role="alert"
             >
-              <TriangleAlert className="mt-0.5 h-3.5 w-3.5 shrink-0" />
+              <TriangleAlert className="mt-0.5 h-3.5 w-3.5 shrink-0 text-red-400" />
               {formError}
             </motion.div>
           ) : null}
         </AnimatePresence>
 
-        <Button type="submit" className="h-11 w-full" disabled={loading || googleLoading}>
+        <Button type="submit" className="h-11 w-full bg-gradient-to-r from-emerald-400 to-emerald-600 text-slate-950 font-black shadow-lg shadow-emerald-500/30 hover:shadow-emerald-500/50 hover:bg-emerald-300 transition-all disabled:opacity-60" disabled={loading || googleLoading}>
           {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
           {isSignup ? 'Create my kitchen' : 'Sign in to FreshSaver'}
           {!loading ? <ArrowRight className="h-4 w-4" /> : null}
         </Button>
 
         {isSignup ? (
-          <p className="text-center text-[10px] font-medium leading-relaxed text-ink-400">
+          <p className="text-center text-[10px] font-medium leading-relaxed text-slate-500">
             By creating an account you agree to keep good food out of the bin.
           </p>
         ) : null}
       </form>
 
-      <div className="mt-5 flex items-center justify-center gap-1.5 text-xs font-semibold text-ink-500">
+      <div className="mt-5 flex items-center justify-center gap-1.5 text-xs font-semibold text-slate-500">
         {isSignup ? 'Already have a kitchen?' : 'New to FreshSaver?'}
         <Link
           href={isSignup ? '/login' : '/signup'}
-          className="inline-flex items-center gap-1 font-black text-emerald-600 transition-colors hover:text-emerald-700"
+          className="inline-flex items-center gap-1 font-black text-emerald-400 transition-colors hover:text-emerald-200"
         >
           {isSignup ? 'Sign in' : 'Create an account'}
           <CheckCircle2 className="h-3.5 w-3.5" />

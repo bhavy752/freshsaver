@@ -13,17 +13,17 @@ interface ShoppingGroupProps {
 
 export function ShoppingGroup({ label, emoji, items, onToggle, onRemove }: ShoppingGroupProps) {
   return (
-    <section className="overflow-hidden rounded-2xl border border-ink-100 bg-white shadow-[0_18px_50px_-42px_rgba(6,78,59,0.35)]">
-      <div className="flex items-center gap-2.5 border-b border-ink-100 bg-gradient-to-r from-cream-50 to-white px-3 py-2.5 sm:px-4">
-        <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-white text-base shadow-sm">
+    <section className="overflow-hidden rounded-2xl border border-slate-700 bg-slate-800/50 shadow-xl shadow-emerald-950/10 backdrop-blur-sm">
+      <div className="flex items-center gap-2.5 border-b border-slate-700 bg-slate-900/40 px-3 py-2.5 sm:px-4">
+        <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-slate-700 text-emerald-400 shadow-sm">
           {emoji}
         </span>
-        <h2 className="text-xs font-black tracking-[-0.01em] text-ink-900">{label}</h2>
-        <span className="ml-auto rounded-full bg-ink-100 px-2 py-0.5 text-[8px] font-black text-ink-500">
+        <h2 className="text-xs font-black tracking-[-0.01em] text-white">{label}</h2>
+        <span className="ml-auto rounded-full bg-slate-700 px-2 py-0.5 text-[8px] font-black text-white">
           {items.length}
         </span>
       </div>
-      <div className="divide-y divide-ink-50">
+      <div className="divide-y divide-slate-700">
         {items.map((item) => (
           <ShoppingItemRow
             key={item.id}

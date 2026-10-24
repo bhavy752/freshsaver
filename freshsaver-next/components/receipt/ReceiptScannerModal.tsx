@@ -368,22 +368,22 @@ export function ReceiptScannerModal({
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.22 }}
           >
-            <div className="border-b border-ink-100 bg-gradient-to-br from-emerald-50/80 to-cream-50 px-5 pb-4 pt-5 sm:px-6">
+            <div className="border-b border-emerald-500/20 bg-gradient-to-br from-emerald-500/10 to-slate-900/80 px-5 pb-4 pt-5 sm:px-6 backdrop-blur-md">
               <div className="flex items-start gap-3">
                 <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-emerald-500 text-white shadow-lg shadow-emerald-500/25">
                   <ScanLine className="h-5 w-5" />
                 </span>
                 <div>
                   <div className="flex flex-wrap items-center gap-2">
-                    <h2 className="text-xl font-black tracking-[-0.04em] text-ink-950">
+                    <h2 className="text-xl font-black tracking-[-0.04em] text-white">
                       Scan a receipt
                     </h2>
-                    <span className="inline-flex items-center gap-1 rounded-full border border-emerald-200 bg-white px-2 py-1 text-[8px] font-black uppercase tracking-[0.1em] text-emerald-700">
+                    <span className="inline-flex items-center gap-1 rounded-full border border-emerald-400/30 bg-emerald-500/20 px-2 py-1 text-[8px] font-black uppercase tracking-[0.1em] text-emerald-200">
                       <Sparkles className="h-2.5 w-2.5" />
                       AI OCR
                     </span>
                   </div>
-                  <p className="mt-0.5 text-xs font-medium text-ink-500">
+                  <p className="mt-0.5 text-xs font-medium text-slate-400">
                     We’ll extract items, dates, and prices, then let you confirm everything.
                   </p>
                 </div>
@@ -400,26 +400,26 @@ export function ReceiptScannerModal({
                 onDrop={handleDrop}
                 className={`relative flex flex-col items-center justify-center rounded-2xl border-2 border-dashed px-6 py-10 text-center transition-all ${
                   dragging
-                    ? 'border-emerald-400 bg-emerald-50'
-                    : 'border-ink-200 bg-ink-50/40 hover:border-emerald-300 hover:bg-emerald-50/30'
+                    ? 'border-emerald-400 bg-emerald-500/10'
+                    : 'border-slate-700/50 bg-slate-800/30 hover:border-emerald-400/50 hover:bg-emerald-500/20'
                 }`}
               >
-                <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white text-emerald-600 shadow-sm">
+                <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-slate-700 text-emerald-400 shadow-lg shadow-emerald-500/20">
                   <UploadCloud className="h-6 w-6" />
                 </div>
-                <p className="mt-4 text-sm font-black text-ink-900">
+                <p className="mt-4 text-sm font-black text-white">
                   Drop your receipt here
                 </p>
-                <p className="mt-1 max-w-sm text-[11px] font-medium leading-relaxed text-ink-400">
+                <p className="mt-1 max-w-sm text-[11px] font-medium leading-relaxed text-slate-400">
                   JPG, PNG, HEIC, or PDF · up to 10 MB. The image is processed securely and never
                   shown to anyone else.
                 </p>
                 <div className="mt-5 flex flex-wrap justify-center gap-2">
-                  <Button onClick={() => fileInputRef.current?.click()} size="sm">
+                  <Button onClick={() => fileInputRef.current?.click()} size="sm" className="bg-emerald-500 text-white font-black hover:bg-emerald-400">
                     <ImageIcon className="h-3.5 w-3.5" />
                     Choose a file
                   </Button>
-                  <Button variant="outline" size="sm" onClick={() => void startScan(null)}>
+                  <Button variant="outline" size="sm" onClick={() => void startScan(null)} className="border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/10">
                     <FileText className="h-3.5 w-3.5" />
                     Try a sample receipt
                   </Button>
@@ -440,9 +440,9 @@ export function ReceiptScannerModal({
               {error ? (
                 <div
                   role="alert"
-                  className="mt-4 flex items-start gap-2 rounded-xl border border-coral-200 bg-coral-50 px-3 py-2.5 text-[11px] font-semibold leading-relaxed text-coral-600"
+                  className="mt-4 flex items-start gap-2 rounded-xl border border-red-500/30 bg-red-500/10 px-3 py-2.5 text-[11px] font-semibold leading-relaxed text-red-300"
                 >
-                  <TriangleAlert className="mt-0.5 h-3.5 w-3.5 shrink-0" />
+                  <TriangleAlert className="mt-0.5 h-3.5 w-3.5 shrink-0 text-red-400" />
                   {error}
                 </div>
               ) : null}
@@ -457,11 +457,11 @@ export function ReceiptScannerModal({
                   return (
                     <div
                       key={feature.title}
-                      className="rounded-xl border border-ink-100 bg-white px-3 py-2.5"
+                      className="rounded-xl border border-slate-700 bg-slate-800/50 px-3 py-2.5 backdrop-blur-sm"
                     >
-                      <Icon className="h-3.5 w-3.5 text-emerald-500" />
-                      <p className="mt-1.5 text-[10px] font-black text-ink-800">{feature.title}</p>
-                      <p className="text-[9px] font-medium text-ink-400">{feature.copy}</p>
+                      <Icon className="h-3.5 w-3.5 text-emerald-400" />
+                      <p className="mt-1.5 text-[10px] font-black text-white">{feature.title}</p>
+                      <p className="text-[9px] font-medium text-slate-400">{feature.copy}</p>
                     </div>
                   );
                 })}
@@ -478,9 +478,9 @@ export function ReceiptScannerModal({
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.22 }}
           >
-            <div className="border-b border-ink-100 bg-ink-950 px-5 pb-4 pt-5 text-white sm:px-6">
+            <div className="border-b border-emerald-500/20 bg-slate-900/80 px-5 pb-4 pt-5 text-white sm:px-6 backdrop-blur-md">
               <div className="flex items-center gap-3">
-                <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-emerald-400 text-ink-950">
+                <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-emerald-400 text-slate-950">
                   <Loader2 className="h-5 w-5 animate-spin" />
                 </span>
                 <div>
@@ -498,16 +498,16 @@ export function ReceiptScannerModal({
             </div>
 
             <div className="grid gap-5 px-5 py-5 sm:grid-cols-[1fr_1.1fr] sm:px-6">
-              <div className="relative overflow-hidden rounded-2xl border border-ink-200 bg-ink-950">
+              <div className="relative overflow-hidden rounded-2xl border border-emerald-500/20 bg-slate-800/50">
                 {previewUrl ? (
                   // eslint-disable-next-line @next/next/no-img-element
                   <img
                     src={previewUrl}
                     alt="Receipt preview"
-                    className="h-64 w-full object-cover opacity-80 sm:h-72"
+                    className="h-64 w-full object-cover opacity-90 sm:h-72"
                   />
                 ) : file?.type === 'application/pdf' ? (
-                  <div className="flex h-64 flex-col items-center justify-center gap-3 bg-gradient-to-br from-ink-900 to-ink-950 text-white/60 sm:h-72">
+                  <div className="flex h-64 flex-col items-center justify-center gap-3 bg-gradient-to-br from-slate-900 to-slate-950 text-white/60 sm:h-72">
                     <FileText className="h-10 w-10 text-emerald-300" />
                     <p className="max-w-[12rem] truncate text-xs font-bold text-white">
                       {file.name}
@@ -517,7 +517,7 @@ export function ReceiptScannerModal({
                     </p>
                   </div>
                 ) : (
-                  <div className="flex h-64 flex-col justify-center gap-2.5 bg-gradient-to-br from-ink-900 to-ink-950 px-6 sm:h-72">
+                  <div className="flex h-64 flex-col justify-center gap-2.5 bg-gradient-to-br from-slate-900 to-slate-950 px-6 sm:h-72">
                     {[80, 62, 90, 48, 72, 56, 84, 66].map((width, index) => (
                       <div
                         key={index}
@@ -533,9 +533,9 @@ export function ReceiptScannerModal({
                   </div>
                 )}
 
-                <div className="pointer-events-none absolute inset-0 bg-grid-emerald bg-[size:22px_22px] opacity-30" />
+                <div className="pointer-events-none absolute inset-0 bg-grid-emerald bg-[size:22px_22px] opacity-20" />
                 <div className="pointer-events-none absolute inset-x-0 h-20 animate-scan-line scan-sheen" />
-                <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-ink-950 to-transparent px-4 pb-3 pt-8">
+                <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-slate-950 to-transparent px-4 pb-3 pt-8">
                   <div className="flex items-center gap-2 text-[9px] font-black uppercase tracking-[0.12em] text-emerald-300">
                     <ScanLine className="h-3 w-3" />
                     Scanning
@@ -544,11 +544,11 @@ export function ReceiptScannerModal({
               </div>
 
               <div className="flex flex-col justify-center">
-                <div className="flex items-center justify-between text-[10px] font-black uppercase tracking-[0.12em] text-ink-400">
+                <div className="flex items-center justify-between text-[10px] font-black uppercase tracking-[0.12em] text-white/80">
                   <span>Processing</span>
                   <span>{Math.round(progress)}%</span>
                 </div>
-                <Progress value={progress} className="mt-2 h-2" />
+                <Progress value={progress} className="mt-2 h-2 bg-slate-700" />
 
                 <div className="mt-5 space-y-2.5">
                   {STATUS_MESSAGES.map((message, index) => {
@@ -562,7 +562,7 @@ export function ReceiptScannerModal({
                               ? 'bg-emerald-500 text-white'
                               : active
                                 ? 'bg-emerald-50 text-emerald-600'
-                                : 'bg-ink-100 text-ink-300'
+                                : 'bg-slate-700 text-slate-500'
                           }`}
                         >
                           {complete ? (
@@ -575,7 +575,7 @@ export function ReceiptScannerModal({
                         </span>
                         <p
                           className={`text-[11px] font-semibold leading-relaxed ${
-                            complete || active ? 'text-ink-700' : 'text-ink-300'
+                            complete || active ? 'text-white' : 'text-slate-500'
                           }`}
                         >
                           {message}
@@ -585,7 +585,7 @@ export function ReceiptScannerModal({
                   })}
                 </div>
 
-                <p className="mt-5 rounded-xl border border-ink-100 bg-ink-50/50 px-3 py-2 text-[9px] font-medium leading-relaxed text-ink-400">
+                <p className="mt-5 rounded-xl border border-slate-700 bg-slate-800/50 px-3 py-2 text-[9px] font-medium leading-relaxed text-slate-400">
                   Keep this window open while we parse the receipt. Nothing is saved until you
                   review and confirm.
                 </p>
@@ -602,22 +602,22 @@ export function ReceiptScannerModal({
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.22 }}
           >
-            <div className="border-b border-ink-100 bg-gradient-to-br from-emerald-50/80 to-cream-50 px-5 pb-4 pt-5 sm:px-6">
+            <div className="border-b border-emerald-500/20 bg-gradient-to-br from-emerald-500/10 to-slate-900/80 px-5 pb-4 pt-5 sm:px-6 backdrop-blur-md">
               <div className="flex flex-wrap items-start justify-between gap-3">
                 <div>
                   <div className="flex items-center gap-2">
                     <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-500 text-white">
                       <CheckCircle2 className="h-4 w-4" />
                     </span>
-                    <h2 className="text-xl font-black tracking-[-0.04em] text-ink-950">
+                    <h2 className="text-xl font-black tracking-[-0.04em] text-white">
                       Review & confirm
                     </h2>
                   </div>
-                  <p className="mt-1 text-xs font-medium text-ink-500">
+                  <p className="mt-1 text-xs font-medium text-slate-400">
                     {rows.length} items found · {averageConfidence}% average confidence
                   </p>
                 </div>
-                <span className="inline-flex items-center gap-1 rounded-full border border-emerald-200 bg-white px-2.5 py-1.5 text-[8px] font-black uppercase tracking-[0.1em] text-emerald-700">
+                <span className="inline-flex items-center gap-1 rounded-full border border-emerald-500/30 bg-emerald-500/20 px-2.5 py-1.5 text-[8px] font-black uppercase tracking-[0.1em] text-emerald-200">
                   <Sparkles className="h-2.5 w-2.5" />
                   AI parsed
                 </span>
@@ -626,9 +626,9 @@ export function ReceiptScannerModal({
 
             <div className="max-h-[calc(92vh-20rem)] space-y-2 overflow-y-auto px-5 py-4 sm:px-6">
               {rows.length === 0 ? (
-                <div className="rounded-2xl border border-dashed border-ink-200 bg-ink-50/40 px-4 py-8 text-center">
-                  <p className="text-sm font-black text-ink-800">No items left to import.</p>
-                  <p className="mt-1 text-[11px] font-medium text-ink-400">
+                <div className="rounded-2xl border border-dashed border-emerald-500/30 bg-emerald-500/10 px-4 py-8 text-center">
+                  <p className="text-sm font-black text-white">No items left to import.</p>
+                  <p className="mt-1 text-[11px] font-medium text-slate-400">
                     Add a row manually or scan another receipt.
                   </p>
                 </div>
@@ -638,7 +638,7 @@ export function ReceiptScannerModal({
                 <div
                   key={row.id}
                   className={`rounded-2xl border p-3 transition-colors ${
-                    row.include ? 'border-ink-100 bg-white' : 'border-ink-100 bg-ink-50/40 opacity-60'
+                    row.include ? 'border-emerald-500/30 bg-slate-800/50' : 'border-slate-700/50 bg-slate-900/30 opacity-60'
                   }`}
                 >
                   <div className="flex items-start gap-2.5">
@@ -649,7 +649,7 @@ export function ReceiptScannerModal({
                       className={`mt-1 flex h-5 w-5 shrink-0 items-center justify-center rounded-md border transition-colors ${
                         row.include
                           ? 'border-emerald-500 bg-emerald-500 text-white'
-                          : 'border-ink-300 bg-white text-transparent'
+                          : 'border-slate-600 bg-slate-900 text-transparent'
                       }`}
                     >
                       <Check className="h-3 w-3" />
@@ -661,14 +661,14 @@ export function ReceiptScannerModal({
                           value={row.name}
                           onChange={(event) => updateRow(row.id, { name: event.target.value })}
                           placeholder="Item name"
-                          className="h-9 flex-1 text-xs font-bold"
+                          className="h-9 flex-1 text-xs font-bold text-white bg-slate-900/50 border-slate-700 placeholder-slate-500 focus:border-emerald-400 focus:ring-emerald-500/30"
                           aria-label="Item name"
                         />
                         <button
                           type="button"
                           onClick={() => removeRow(row.id)}
                           aria-label={`Remove ${row.name || 'item'}`}
-                          className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-ink-300 transition-colors hover:bg-coral-50 hover:text-coral-500"
+                          className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-slate-400 transition-colors hover:bg-red-500/20 hover:text-red-400"
                         >
                           <Trash2 className="h-3.5 w-3.5" />
                         </button>
@@ -676,7 +676,7 @@ export function ReceiptScannerModal({
 
                       <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
                         <div>
-                          <Label className="text-[8px]">Qty</Label>
+                          <Label className="text-[8px] text-slate-400">Qty</Label>
                           <Input
                             type="number"
                             min="0.01"
@@ -685,18 +685,18 @@ export function ReceiptScannerModal({
                             onChange={(event) =>
                               updateRow(row.id, { quantity: event.target.value })
                             }
-                            className="mt-1 h-8 text-xs"
+                            className="mt-1 h-8 text-xs text-white bg-slate-900/50 border-slate-700 focus:border-emerald-400 focus:ring-emerald-500/30"
                             aria-label="Quantity"
                           />
                         </div>
                         <div>
-                          <Label className="text-[8px]">Unit</Label>
+                          <Label className="text-[8px] text-slate-400">Unit</Label>
                           <select
                             value={row.unit}
                             onChange={(event) =>
                               updateRow(row.id, { unit: event.target.value as FoodUnit })
                             }
-                            className="mt-1 flex h-8 w-full rounded-lg border border-ink-200 bg-white px-2 text-xs font-medium text-ink-800 focus-visible:border-emerald-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-100"
+                            className="mt-1 flex h-8 w-full rounded-lg border border-slate-700 bg-slate-900/50 px-2 text-xs font-medium text-white focus:border-emerald-400 focus:ring-emerald-500/30"
                             aria-label="Unit"
                           >
                             {UNITS.map((unit) => (
@@ -707,26 +707,26 @@ export function ReceiptScannerModal({
                           </select>
                         </div>
                         <div>
-                          <Label className="text-[8px]">Expiry</Label>
+                          <Label className="text-[8px] text-slate-400">Expiry</Label>
                           <Input
                             type="date"
                             value={row.expiry}
                             onChange={(event) =>
                               updateRow(row.id, { expiry: event.target.value })
                             }
-                            className="mt-1 h-8 text-xs"
+                            className="mt-1 h-8 text-xs text-white bg-slate-900/50 border-slate-700 focus:border-emerald-400 focus:ring-emerald-500/30"
                             aria-label="Expiry date"
                           />
                         </div>
                         <div>
-                          <Label className="text-[8px]">Cost</Label>
+                          <Label className="text-[8px] text-slate-400">Cost</Label>
                           <Input
                             type="number"
                             min="0"
                             step="0.01"
                             value={row.cost}
                             onChange={(event) => updateRow(row.id, { cost: event.target.value })}
-                            className="mt-1 h-8 text-xs"
+                            className="mt-1 h-8 text-xs text-white bg-slate-900/50 border-slate-700 placeholder-slate-500 focus:border-emerald-400 focus:ring-emerald-500/30"
                             placeholder="0.00"
                             aria-label="Estimated cost"
                           />
@@ -734,7 +734,7 @@ export function ReceiptScannerModal({
                       </div>
 
                       <div>
-                        <Label className="text-[8px]">Category</Label>
+                        <Label className="text-[8px] text-slate-400">Category</Label>
                         <select
                           value={row.categoryId}
                           onChange={(event) => {
@@ -745,7 +745,7 @@ export function ReceiptScannerModal({
                               categoryName: category?.name ?? row.categoryName,
                             });
                           }}
-                          className="mt-1 flex h-8 w-full rounded-lg border border-ink-200 bg-white px-2 text-xs font-medium text-ink-800 focus-visible:border-emerald-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-100"
+                          className="mt-1 flex h-8 w-full rounded-lg border border-slate-700 bg-slate-900/50 px-2 text-xs font-medium text-white focus:border-emerald-400 focus:ring-emerald-500/30"
                           aria-label="Category"
                         >
                           <option value="">Uncategorized</option>
@@ -764,7 +764,7 @@ export function ReceiptScannerModal({
               <button
                 type="button"
                 onClick={addBlankRow}
-                className="flex w-full items-center justify-center gap-1.5 rounded-xl border border-dashed border-ink-200 bg-white px-3 py-2.5 text-[10px] font-black text-ink-500 transition-colors hover:border-emerald-300 hover:bg-emerald-50/30 hover:text-emerald-700"
+                className="flex w-full items-center justify-center gap-1.5 rounded-xl border border-dashed border-emerald-500/30 bg-emerald-500/10 px-3 py-2.5 text-[10px] font-black text-emerald-300 transition-colors hover:border-emerald-400 hover:bg-emerald-500/20 hover:text-emerald-200"
               >
                 <Plus className="h-3.5 w-3.5" />
                 Add a missing item
@@ -773,27 +773,27 @@ export function ReceiptScannerModal({
               {error ? (
                 <div
                   role="alert"
-                  className="flex items-start gap-2 rounded-xl border border-coral-200 bg-coral-50 px-3 py-2.5 text-[11px] font-semibold leading-relaxed text-coral-600"
+                  className="flex items-start gap-2 rounded-xl border border-red-500/30 bg-red-500/10 px-3 py-2.5 text-[11px] font-semibold leading-relaxed text-red-300"
                 >
-                  <TriangleAlert className="mt-0.5 h-3.5 w-3.5 shrink-0" />
+                  <TriangleAlert className="mt-0.5 h-3.5 w-3.5 shrink-0 text-red-400" />
                   {error}
                 </div>
               ) : null}
             </div>
 
-            <div className="flex flex-wrap items-center justify-between gap-2 border-t border-ink-100 bg-ink-50/40 px-5 py-4 sm:px-6">
+            <div className="flex flex-wrap items-center justify-between gap-2 border-t border-slate-700 bg-slate-900/50 px-5 py-4 sm:px-6 backdrop-blur-sm">
               <Button
                 variant="ghost"
                 onClick={() => {
                   resetScanner();
                 }}
                 disabled={importing}
-                className="px-3"
+                className="px-3 text-slate-400 hover:text-white"
               >
                 <ArrowLeft className="h-4 w-4" />
                 Scan another
               </Button>
-              <Button onClick={() => void handleImport()} disabled={importing || includedRows.length === 0}>
+              <Button onClick={() => void handleImport()} disabled={importing || includedRows.length === 0} className="bg-emerald-400 text-slate-950 font-black shadow-lg shadow-emerald-500/30 hover:bg-emerald-300">
                 {importing ? <Loader2 className="h-4 w-4 animate-spin" /> : <ArrowRight className="h-4 w-4" />}
                 Import {includedRows.length} {includedRows.length === 1 ? 'item' : 'items'}
               </Button>
@@ -818,18 +818,18 @@ export function ReceiptScannerModal({
             >
               <Check className="h-8 w-8" />
             </motion.div>
-            <h2 className="mt-5 text-2xl font-black tracking-[-0.04em] text-ink-950">
+            <h2 className="mt-5 text-2xl font-black tracking-[-0.04em] text-white">
               Receipt imported.
             </h2>
-            <p className="mx-auto mt-2 max-w-sm text-sm font-medium leading-relaxed text-ink-500">
+            <p className="mx-auto mt-2 max-w-sm text-sm font-medium leading-relaxed text-slate-300">
               {importedCount} {importedCount === 1 ? 'item is' : 'items are'} now tracked in your
               pantry. We’ll start watching expiry dates and savings immediately.
             </p>
-            <div className="mx-auto mt-5 flex max-w-xs items-center justify-center gap-2 rounded-xl border border-emerald-100 bg-emerald-50/60 px-3 py-2.5 text-[10px] font-semibold text-emerald-800">
+            <div className="mx-auto mt-5 flex max-w-xs items-center justify-center gap-2 rounded-xl border border-emerald-500/30 bg-emerald-500/10 px-3 py-2.5 text-[10px] font-semibold text-emerald-200">
               <Sparkles className="h-3.5 w-3.5" />
               Your rescue radar is already updating.
             </div>
-            <Button className="mt-6" onClick={handleClose}>
+            <Button className="mt-6 bg-emerald-400 text-slate-950 font-black shadow-lg shadow-emerald-500/30 hover:bg-emerald-300" onClick={handleClose}>
               Back to my pantry
             </Button>
           </motion.div>

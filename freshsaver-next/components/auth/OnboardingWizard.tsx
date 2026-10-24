@@ -146,21 +146,20 @@ export function OnboardingWizard({
   }
 
   return (
-    <main className="min-h-screen bg-cream-50 lg:grid lg:grid-cols-[0.82fr_1.18fr]">
-      <aside className="relative hidden overflow-hidden bg-ink-950 lg:flex lg:flex-col">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_10%,rgba(16,185,129,0.3),transparent_36%),radial-gradient(circle_at_80%_90%,rgba(251,191,36,0.14),transparent_34%)]" />
-        <div className="absolute inset-0 bg-grid-emerald bg-[size:44px_44px] opacity-30" />
-        <div className="noise absolute inset-0" />
+    <main className="min-h-screen bg-slate-950 lg:grid lg:grid-cols-[0.82fr_1.18fr]">
+      <aside className="relative hidden overflow-hidden bg-slate-950 lg:flex lg:flex-col">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_10%,rgba(16,185,129,0.15),transparent_36%),radial-gradient(circle_at_80%_90%,rgba(251,191,36,0.1),transparent_34%)]" />
+        <div className="absolute inset-0 bg-grid-emerald bg-[size:44px_44px] opacity-20" />
 
         <div className="relative z-10 flex items-center gap-2.5 px-9 pt-9">
-          <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-400 text-ink-950">
+          <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-500 text-slate-950 shadow-lg shadow-emerald-500/30">
             <Leaf className="h-5 w-5" />
           </span>
           <span className="text-lg font-black tracking-[-0.04em] text-white">FreshSaver</span>
         </div>
 
         <div className="relative z-10 flex flex-1 flex-col justify-center px-9 py-10">
-          <p className="text-[10px] font-black uppercase tracking-[0.2em] text-emerald-300">
+          <p className="text-[10px] font-black uppercase tracking-[0.2em] text-emerald-400">
             Setup · 2 minutes
           </p>
           <h1 className="mt-3 max-w-sm text-4xl font-black leading-[1.02] tracking-[-0.05em] text-white">
@@ -177,7 +176,7 @@ export function OnboardingWizard({
                   key={entry.title}
                   className={`flex items-center gap-3.5 rounded-2xl border px-4 py-3.5 transition-all ${
                     active
-                      ? 'border-emerald-400/30 bg-emerald-400/10'
+                      ? 'border-emerald-400/30 bg-emerald-500/10'
                       : complete
                         ? 'border-white/5 bg-white/[0.03]'
                         : 'border-white/5 bg-transparent'
@@ -186,7 +185,7 @@ export function OnboardingWizard({
                   <span
                     className={`flex h-9 w-9 items-center justify-center rounded-xl ${
                       complete
-                        ? 'bg-emerald-400 text-ink-950'
+                        ? 'bg-emerald-400 text-slate-950'
                         : active
                           ? 'bg-emerald-400/15 text-emerald-300'
                           : 'bg-white/5 text-white/30'
@@ -220,34 +219,38 @@ export function OnboardingWizard({
         </div>
       </aside>
 
-      <section className="relative flex min-h-screen flex-col overflow-hidden px-5 py-7 sm:px-8 lg:px-12">
-        <div className="pointer-events-none absolute -right-24 top-0 h-72 w-72 rounded-full bg-emerald-200/30 blur-3xl" />
-        <div className="pointer-events-none absolute -bottom-20 -left-20 h-72 w-72 rounded-full bg-amber-200/20 blur-3xl" />
+      <section className="relative flex min-h-screen flex-col overflow-hidden px-5 py-7 sm:px-8 lg:px-12 bg-slate-950">
+        <div className="pointer-events-none absolute -right-24 top-0 h-72 w-72 rounded-full bg-emerald-950/30 blur-3xl" />
+        <div className="pointer-events-none absolute -bottom-20 -left-20 h-72 w-72 rounded-full bg-amber-950/20 blur-3xl" />
 
         <div className="relative z-10 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2 lg:hidden">
             <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-500 text-white">
               <Leaf className="h-4 w-4" />
             </span>
-            <span className="text-base font-black tracking-[-0.04em] text-ink-950">
+            <span className="text-base font-black tracking-[-0.04em] text-white">
               FreshSaver
             </span>
           </Link>
-          <p className="ml-auto text-[10px] font-black uppercase tracking-[0.16em] text-ink-400">
+          <p className="ml-auto text-[10px] font-black uppercase tracking-[0.16em] text-slate-400">
             Step {step + 1} of {STEPS.length}
           </p>
         </div>
 
         <div className="relative z-10 mx-auto flex w-full max-w-xl flex-1 flex-col justify-center py-8">
           <div className="mb-6">
-            <div className="flex items-center justify-between text-[10px] font-black uppercase tracking-[0.14em] text-ink-400">
+            <div className="flex items-center justify-between text-[10px] font-black uppercase tracking-[0.14em] text-slate-400">
               <span>{STEPS[step].title}</span>
               <span>{Math.round(progress)}%</span>
             </div>
-            <Progress value={progress} className="mt-2" />
+            <Progress
+              value={progress}
+              className="mt-2 bg-slate-700"
+              barClassName="bg-emerald-500"
+            />
           </div>
 
-          <div className="relative overflow-hidden rounded-[2rem] border border-white/80 bg-white/85 p-6 shadow-[0_40px_100px_-55px_rgba(6,78,59,0.5)] backdrop-blur-2xl sm:p-8">
+          <div className="relative overflow-hidden rounded-[2rem] border border-slate-700 bg-slate-900/60 p-6 shadow-2xl shadow-emerald-950/20 backdrop-blur-xl sm:p-8">
             <AnimatePresence mode="wait" initial={false}>
               <motion.div
                 key={step}
@@ -258,18 +261,18 @@ export function OnboardingWizard({
               >
                 {step === 0 ? (
                   <div>
-                    <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-600">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-emerald-500/20 text-emerald-400">
                       <Home className="h-5 w-5" />
                     </div>
-                    <h2 className="mt-4 text-2xl font-black tracking-[-0.04em] text-ink-950">
+                    <h2 className="mt-4 text-2xl font-black tracking-[-0.04em] text-white">
                       What should we call your household?
                     </h2>
-                    <p className="mt-1.5 text-sm font-medium leading-relaxed text-ink-500">
+                    <p className="mt-1.5 text-sm font-medium leading-relaxed text-slate-400">
                       This is the shared name everyone sees. You can invite family members later.
                     </p>
 
                     <div className="mt-6 space-y-1.5">
-                      <Label htmlFor="householdName">Household name</Label>
+                      <Label htmlFor="householdName" className="text-xs font-black text-slate-300">Household name</Label>
                       <Input
                         id="householdName"
                         value={householdName}
@@ -277,14 +280,15 @@ export function OnboardingWizard({
                         placeholder="The Green Table"
                         maxLength={48}
                         autoFocus
+                        className="bg-slate-900/50 border-slate-700 text-white placeholder-slate-500 focus:border-emerald-400 focus:ring-emerald-500/30"
                       />
                     </div>
 
-                    <div className="mt-5 rounded-2xl border border-ink-100 bg-ink-50/50 p-4">
+                    <div className="mt-5 rounded-xl border border-slate-700 bg-slate-800/50 p-4">
                       <div className="flex items-center justify-between gap-4">
                         <div>
-                          <p className="text-xs font-black text-ink-900">People in your kitchen</p>
-                          <p className="mt-0.5 text-[11px] font-medium text-ink-400">
+                          <p className="text-xs font-black text-white">People in your kitchen</p>
+                          <p className="mt-0.5 text-[11px] font-medium text-slate-400">
                             Used to size recipes and shopping lists.
                           </p>
                         </div>
@@ -293,19 +297,19 @@ export function OnboardingWizard({
                             type="button"
                             onClick={() => setMembers((count) => Math.max(1, count - 1))}
                             aria-label="Remove a household member"
-                            className="flex h-8 w-8 items-center justify-center rounded-lg border border-ink-200 bg-white text-ink-600 transition-colors hover:bg-ink-50 disabled:opacity-40"
+                            className="flex h-8 w-8 items-center justify-center rounded-lg border border-slate-600 bg-slate-900 text-white transition-colors hover:bg-slate-800 disabled:opacity-40 disabled:hover:bg-slate-900"
                             disabled={members <= 1}
                           >
                             <Minus className="h-3.5 w-3.5" />
                           </button>
-                          <span className="w-6 text-center text-sm font-black text-ink-900">
+                          <span className="w-6 text-center text-sm font-black text-white">
                             {members}
                           </span>
                           <button
                             type="button"
                             onClick={() => setMembers((count) => Math.min(20, count + 1))}
                             aria-label="Add a household member"
-                            className="flex h-8 w-8 items-center justify-center rounded-lg border border-ink-200 bg-white text-ink-600 transition-colors hover:bg-ink-50 disabled:opacity-40"
+                            className="flex h-8 w-8 items-center justify-center rounded-lg border border-slate-600 bg-slate-900 text-white transition-colors hover:bg-slate-800 disabled:opacity-40 disabled:hover:bg-slate-900"
                             disabled={members >= 20}
                           >
                             <Plus className="h-3.5 w-3.5" />
@@ -318,13 +322,13 @@ export function OnboardingWizard({
 
                 {step === 1 ? (
                   <div>
-                    <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-amber-50 text-amber-600">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-amber-500/20 text-amber-400">
                       <Salad className="h-5 w-5" />
                     </div>
-                    <h2 className="mt-4 text-2xl font-black tracking-[-0.04em] text-ink-950">
+                    <h2 className="mt-4 text-2xl font-black tracking-[-0.04em] text-white">
                       Any dietary preferences?
                     </h2>
-                    <p className="mt-1.5 text-sm font-medium leading-relaxed text-ink-500">
+                    <p className="mt-1.5 text-sm font-medium leading-relaxed text-slate-400">
                       We’ll use these to shape rescue recipes and smart shopping suggestions.
                     </p>
 
@@ -339,8 +343,8 @@ export function OnboardingWizard({
                             aria-pressed={selected}
                             className={`inline-flex items-center gap-1.5 rounded-full border px-3.5 py-2 text-xs font-bold transition-all ${
                               selected
-                                ? 'border-emerald-300 bg-emerald-50 text-emerald-700 shadow-sm'
-                                : 'border-ink-200 bg-white text-ink-500 hover:border-emerald-200 hover:text-ink-800'
+                                ? 'border-emerald-400 bg-emerald-500 text-slate-950 shadow-lg shadow-emerald-500/40'
+                                : 'border-slate-700 bg-slate-900/50 text-slate-400 hover:border-emerald-500/50 hover:text-white'
                             }`}
                           >
                             <span aria-hidden="true">{option.emoji}</span>
@@ -351,7 +355,7 @@ export function OnboardingWizard({
                       })}
                     </div>
 
-                    <p className="mt-4 text-[11px] font-medium text-ink-400">
+                    <p className="mt-4 text-[11px] font-medium text-slate-500">
                       Optional — you can change these anytime in settings.
                     </p>
                   </div>
@@ -362,36 +366,36 @@ export function OnboardingWizard({
                     <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-emerald-500 text-white shadow-lg shadow-emerald-500/25">
                       <Sparkles className="h-5 w-5" />
                     </div>
-                    <h2 className="mt-4 text-2xl font-black tracking-[-0.04em] text-ink-950">
+                    <h2 className="mt-4 text-2xl font-black tracking-[-0.04em] text-white">
                       Your kitchen is ready, {firstName}.
                     </h2>
-                    <p className="mt-1.5 text-sm font-medium leading-relaxed text-ink-500">
+                    <p className="mt-1.5 text-sm font-medium leading-relaxed text-slate-400">
                       Here’s what we’re setting up. You can change everything later.
                     </p>
 
                     <div className="mt-6 space-y-2.5">
-                      <div className="flex items-center justify-between gap-4 rounded-2xl border border-ink-100 bg-ink-50/40 px-4 py-3">
+                      <div className="flex items-center justify-between gap-4 rounded-xl border border-slate-700 bg-slate-800/50 px-4 py-3">
                         <div>
-                          <p className="text-[10px] font-black uppercase tracking-[0.12em] text-ink-400">
+                          <p className="text-[10px] font-black uppercase tracking-[0.12em] text-slate-400">
                             Household
                           </p>
-                          <p className="mt-0.5 text-sm font-black text-ink-900">
+                          <p className="mt-0.5 text-sm font-black text-white">
                             {householdName || 'Your kitchen'}
                           </p>
                         </div>
-                        <span className="inline-flex items-center gap-1 rounded-full bg-white px-2.5 py-1 text-[10px] font-bold text-ink-500">
+                        <span className="inline-flex items-center gap-1 rounded-full bg-emerald-500/20 px-2.5 py-1 text-[10px] font-bold text-emerald-300">
                           <Users className="h-3 w-3" />
                           {members}
                         </span>
                       </div>
 
-                      <div className="rounded-2xl border border-ink-100 bg-ink-50/40 px-4 py-3">
-                        <p className="text-[10px] font-black uppercase tracking-[0.12em] text-ink-400">
+                      <div className="rounded-xl border border-slate-700 bg-slate-800/50 px-4 py-3">
+                        <p className="text-[10px] font-black uppercase tracking-[0.12em] text-slate-400">
                           Dietary preferences
                         </p>
                         <div className="mt-1.5 flex flex-wrap gap-1.5">
                           {preferences.length === 0 ? (
-                            <span className="text-xs font-semibold text-ink-500">
+                            <span className="text-xs font-semibold text-slate-400">
                               No restrictions — flexible recipes
                             </span>
                           ) : (
@@ -400,7 +404,7 @@ export function OnboardingWizard({
                               return (
                                 <span
                                   key={value}
-                                  className="inline-flex items-center gap-1 rounded-full border border-emerald-200 bg-white px-2 py-1 text-[10px] font-bold text-emerald-700"
+                                  className="inline-flex items-center gap-1 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2 py-1 text-[10px] font-bold text-emerald-300"
                                 >
                                   {option?.emoji} {option?.label ?? value}
                                 </span>
@@ -410,11 +414,11 @@ export function OnboardingWizard({
                         </div>
                       </div>
 
-                      <div className="rounded-2xl border border-emerald-200 bg-emerald-50/60 px-4 py-3">
-                        <p className="text-[10px] font-black uppercase tracking-[0.12em] text-emerald-600">
+                      <div className="rounded-xl border border-emerald-500/30 bg-emerald-500/10 px-4 py-3">
+                        <p className="text-[10px] font-black uppercase tracking-[0.12em] text-emerald-300">
                           Next up
                         </p>
-                        <p className="mt-1 text-xs font-semibold leading-relaxed text-emerald-900">
+                        <p className="mt-1 text-xs font-semibold leading-relaxed text-emerald-200">
                           Scan your first receipt or add an item manually. We’ll start tracking
                           expiry dates and savings immediately.
                         </p>
@@ -422,7 +426,7 @@ export function OnboardingWizard({
                     </div>
 
                     {demo ? (
-                      <p className="mt-4 rounded-xl border border-amber-200 bg-amber-50/70 px-3 py-2 text-[10px] font-semibold leading-relaxed text-amber-800">
+                      <p className="mt-4 rounded-xl border border-amber-500/30 bg-amber-500/10 px-3 py-2 text-[10px] font-semibold leading-relaxed text-amber-300">
                         Demo mode: setup is simulated. Connect Supabase to persist your household.
                       </p>
                     ) : null}
@@ -437,10 +441,10 @@ export function OnboardingWizard({
                   initial={{ opacity: 0, y: -6 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -6 }}
-                  className="mt-4 flex items-start gap-2 rounded-xl border border-coral-200 bg-coral-50 px-3 py-2.5 text-[11px] font-semibold leading-relaxed text-coral-600"
+                  className="mt-4 flex items-start gap-2 rounded-xl border border-red-500/30 bg-red-500/10 px-3 py-2.5 text-[11px] font-semibold leading-relaxed text-red-300"
                   role="alert"
                 >
-                  <TriangleAlert className="mt-0.5 h-3.5 w-3.5 shrink-0" />
+                  <TriangleAlert className="mt-0.5 h-3.5 w-3.5 shrink-0 text-red-400" />
                   {error}
                 </motion.div>
               ) : null}
@@ -451,19 +455,19 @@ export function OnboardingWizard({
                 variant="ghost"
                 onClick={goBack}
                 disabled={step === 0 || saving}
-                className="px-3"
+                className="px-3 text-slate-400 hover:text-white"
               >
                 <ArrowLeft className="h-4 w-4" />
                 Back
               </Button>
 
               {step < STEPS.length - 1 ? (
-                <Button onClick={goNext} disabled={saving}>
+                <Button onClick={goNext} disabled={saving} className="bg-emerald-400 text-slate-950 font-black shadow-lg shadow-emerald-500/30 hover:bg-emerald-300 disabled:opacity-60">
                   Continue
                   <ArrowRight className="h-4 w-4" />
                 </Button>
               ) : (
-                <Button onClick={finish} disabled={saving}>
+                <Button onClick={finish} disabled={saving} className="bg-emerald-500 text-white font-black shadow-lg shadow-emerald-500/30 hover:bg-emerald-400 disabled:opacity-60">
                   {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Sparkles className="h-4 w-4" />}
                   Enter my kitchen
                 </Button>
@@ -471,7 +475,7 @@ export function OnboardingWizard({
             </div>
           </div>
 
-          <p className="mt-5 text-center text-[10px] font-semibold text-ink-400">
+          <p className="mt-5 text-center text-[10px] font-semibold text-slate-500">
             Your data stays private to your household. No ads, no resale.
           </p>
         </div>

@@ -40,7 +40,7 @@ export function FAQ() {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   return (
-    <section id="faq" className="relative overflow-hidden bg-[#f8faf5] py-20 sm:py-24 lg:py-28">
+    <section id="faq" className="scroll-mt-28 relative overflow-hidden bg-[#f8faf5] py-20 sm:py-24 lg:py-28">
       <div className="pointer-events-none absolute -right-28 top-16 h-80 w-80 rounded-full bg-emerald-200/35 blur-3xl" />
       <div className="relative mx-auto max-w-4xl px-5 lg:px-8">
         <SectionHeading

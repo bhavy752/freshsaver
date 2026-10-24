@@ -122,7 +122,7 @@ export function Testimonials() {
   };
 
   return (
-    <section id="stories" className="relative overflow-hidden bg-[#f8faf5] py-20 sm:py-24 lg:py-28">
+    <section id="stories" className="scroll-mt-28 relative overflow-hidden bg-[#f8faf5] py-20 sm:py-24 lg:py-28">
       <div className="pointer-events-none absolute -left-24 top-8 h-72 w-72 rounded-full bg-amber-200/30 blur-3xl" />
       <div className="pointer-events-none absolute -right-24 bottom-4 h-80 w-80 rounded-full bg-emerald-200/35 blur-3xl" />
 
