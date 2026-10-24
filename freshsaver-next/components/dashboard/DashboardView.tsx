@@ -207,7 +207,7 @@ export function DashboardView() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-950 via-emerald-950/10 to-slate-950 text-white p-4 sm:p-6 lg:p-8 space-y-8">
+    <div className="min-h-screen bg-slate-950 text-white p-6 space-y-8">
       {/* Glassmorphic Topbar */}
       <header className="sticky top-0 z-50 flex items-center justify-between gap-3 rounded-2xl bg-slate-900/70 backdrop-blur-xl border border-emerald-500/20 p-3 sm:p-4 shadow-2xl shadow-emerald-950/20">
         <div className="flex items-center gap-3">

@@ -404,7 +404,7 @@ export function AuthForm({ mode }: { mode: AuthMode }) {
           ) : null}
         </AnimatePresence>
 
-        <Button type="submit" className="h-11 w-full bg-gradient-to-r from-emerald-400 to-emerald-600 text-slate-950 font-black shadow-lg shadow-emerald-500/30 hover:shadow-emerald-500/50 hover:bg-emerald-300 transition-all disabled:opacity-60" disabled={loading || googleLoading}>
+        <Button type="submit" className="h-11 w-full bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 font-bold rounded-xl py-3 shadow-lg shadow-emerald-500/20 transition-all disabled:opacity-60" disabled={loading || googleLoading}>
           {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
           {isSignup ? 'Create my kitchen' : 'Sign in to FreshSaver'}
           {!loading ? <ArrowRight className="h-4 w-4" /> : null}
