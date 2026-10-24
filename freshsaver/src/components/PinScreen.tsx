@@ -199,7 +199,7 @@ export function PinScreen({ onSuccess, onBack }: PinScreenProps) {
               key={digit}
               onClick={() => handleDigit(digit)}
               disabled={loading}
-              className="flex items-center justify-center w-full aspect-square rounded-2xl bg-slate-900/60 backdrop-blur-md border border-emerald-500/20 text-xl font-extrabold text-emerald-100 hover:bg-emerald-500/20 hover:border-emerald-400 hover:scale-[1.03] active:scale-90 transition-all duration-200 shadow-sm disabled:opacity-60"
+              className="flex items-center justify-center w-full aspect-square rounded-2xl bg-slate-900/90 border border-emerald-500/30 text-white text-2xl font-bold hover:bg-emerald-950/50 hover:border-emerald-400 transition-all duration-200 shadow-sm disabled:opacity-60"
             >
               {digit}
             </button>
@@ -208,7 +208,7 @@ export function PinScreen({ onSuccess, onBack }: PinScreenProps) {
           <button
             onClick={() => handleDigit('0')}
             disabled={loading}
-            className="col-start-2 flex items-center justify-center w-full aspect-square rounded-2xl bg-slate-900/60 backdrop-blur-md border border-emerald-500/20 text-xl font-extrabold text-emerald-100 hover:bg-emerald-500/20 hover:border-emerald-400 hover:scale-[1.03] active:scale-90 transition-all duration-200 shadow-sm disabled:opacity-60"
+            className="col-start-2 flex items-center justify-center w-full aspect-square rounded-2xl bg-slate-900/90 border border-emerald-500/30 text-white text-2xl font-bold hover:bg-emerald-950/50 hover:border-emerald-400 transition-all duration-200 shadow-sm disabled:opacity-60"
           >
             0
           </button>
@@ -216,7 +216,7 @@ export function PinScreen({ onSuccess, onBack }: PinScreenProps) {
             onClick={handleDelete}
             disabled={loading}
             aria-label="Delete last digit"
-            className="flex items-center justify-center w-full aspect-square rounded-2xl bg-amber-500/20 border border-amber-500/30 text-amber-300 hover:bg-amber-500/30 active:scale-90 transition-all duration-200 disabled:opacity-60"
+            className="col-start-3 flex items-center justify-center w-full aspect-square rounded-2xl bg-slate-900/90 border border-emerald-500/30 text-white text-xl font-bold hover:bg-emerald-950/50 hover:border-emerald-400 transition-all duration-200 shadow-sm disabled:opacity-60"
           >
             <Delete className="w-5 h-5" strokeWidth={2.5} />
           </button>
