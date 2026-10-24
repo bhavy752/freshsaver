@@ -157,11 +157,17 @@ export function LandingHero({ onGetStarted, onWatchDemo }: LandingHeroProps) {
       </div>
 
       <div className="relative mx-auto mt-14 flex max-w-7xl flex-wrap items-center justify-center gap-x-8 gap-y-3 px-5 text-[10px] font-black uppercase tracking-[0.19em] text-slate-500 lg:mt-20 lg:px-8">
-        <span className="flex items-center gap-1.5"><ShieldCheck className="h-3.5 w-3.5 text-emerald-400" /> Bank-grade privacy</span>
+        <span className="flex items-center gap-1.5 rounded-full bg-slate-900/80 backdrop-blur-md border border-emerald-500/30 px-4 py-1.5 shadow-lg text-emerald-300">
+          <ShieldCheck className="h-3.5 w-3.5 text-emerald-400" /> Bank-grade privacy
+        </span>
         <span className="h-1 w-1 rounded-full bg-slate-700" />
-        <span className="flex items-center gap-1.5"><Sparkles className="h-3.5 w-3.5 text-amber-300" /> AI receipt parsing</span>
+        <span className="flex items-center gap-1.5 rounded-full bg-slate-900/80 backdrop-blur-md border border-emerald-500/30 px-4 py-1.5 shadow-lg text-emerald-300">
+          <Sparkles className="h-3.5 w-3.5 text-amber-300" /> AI receipt parsing
+        </span>
         <span className="h-1 w-1 rounded-full bg-slate-700" />
-        <span className="flex items-center gap-1.5"><Check className="h-3.5 w-3.5 text-emerald-400" /> Real-time family sync</span>
+        <span className="flex items-center gap-1.5 rounded-full bg-slate-900/80 backdrop-blur-md border border-emerald-500/30 px-4 py-1.5 shadow-lg text-emerald-300">
+          <Check className="h-3.5 w-3.5 text-emerald-400" /> Real-time family sync
+        </span>
       </div>
     </section>
   );

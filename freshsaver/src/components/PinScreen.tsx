@@ -99,7 +99,6 @@ export function PinScreen({ onSuccess, onBack }: PinScreenProps) {
     setError('');
     setLoading(true);
     try {
-      // removePin resolves with { error } rather than throwing — surface it.
       const { error: pinError } = await removePin();
       if (pinError) {
         setError(pinError);
@@ -122,15 +121,14 @@ export function PinScreen({ onSuccess, onBack }: PinScreenProps) {
     : 'Re-enter to confirm ✅';
 
   return (
-    <div className="relative min-h-screen overflow-hidden bg-gradient-to-br from-emerald-50 via-amber-50 to-rose-50 flex flex-col items-center justify-center px-5 py-8">
-      {/* Ambient culinary emoji scene */}
+    <div className="relative min-h-screen overflow-hidden bg-gradient-to-br from-slate-950 via-emerald-950/30 to-slate-950 text-white flex flex-col items-center justify-center px-5 py-8">
       <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
-        <span className="absolute top-10 left-8 text-4xl opacity-30 animate-float">🍎</span>
-        <span className="absolute top-24 right-10 text-3xl opacity-30 animate-float-slow">🥛</span>
-        <span className="absolute bottom-24 left-12 text-4xl opacity-25 animate-float-slow">🥑</span>
-        <span className="absolute bottom-16 right-14 text-4xl opacity-30 animate-float">🍞</span>
-        <div className="absolute -top-24 -right-20 w-72 h-72 rounded-full bg-emerald-200/40 blur-3xl" />
-        <div className="absolute -bottom-24 -left-20 w-72 h-72 rounded-full bg-amber-200/40 blur-3xl" />
+        <span className="absolute top-10 left-8 text-4xl opacity-20 animate-float">🍎</span>
+        <span className="absolute top-24 right-10 text-3xl opacity-20 animate-float-slow">🥛</span>
+        <span className="absolute bottom-24 left-12 text-4xl opacity-15 animate-float-slow">🥑</span>
+        <span className="absolute bottom-16 right-14 text-4xl opacity-20 animate-float">🍞</span>
+        <div className="absolute -top-24 -right-20 w-72 h-72 rounded-full bg-emerald-500/20 blur-3xl" />
+        <div className="absolute -bottom-24 -left-20 w-72 h-72 rounded-full bg-emerald-900/20 blur-3xl" />
       </div>
 
       <motion.div
@@ -140,7 +138,7 @@ export function PinScreen({ onSuccess, onBack }: PinScreenProps) {
       >
         <button
           onClick={onBack}
-          className="self-start inline-flex items-center gap-1.5 rounded-xl bg-white/80 border border-emerald-100 px-3 py-2 text-sm font-bold text-slate-600 hover:text-emerald-700 hover:bg-white transition-all duration-200 active:scale-95 mb-8 shadow-sm"
+          className="self-start inline-flex items-center gap-1.5 rounded-xl bg-slate-900/60 backdrop-blur-md border border-emerald-500/30 px-3 py-2 text-sm font-bold text-emerald-200 hover:text-emerald-100 hover:bg-slate-800 transition-all duration-200 active:scale-95 mb-8 shadow-lg"
         >
           <ArrowLeft className="w-4 h-4" strokeWidth={2.5} />
           Back
@@ -150,12 +148,11 @@ export function PinScreen({ onSuccess, onBack }: PinScreenProps) {
           <Lock className="w-8 h-8 text-white" strokeWidth={2.5} />
         </div>
 
-        <h1 className="text-2xl font-extrabold text-slate-900 tracking-tight">{title}</h1>
-        <p className="text-sm text-slate-500 font-medium mt-1.5 text-center">{subtitle}</p>
+        <h1 className="text-2xl font-extrabold text-white tracking-tight">{title}</h1>
+        <p className="text-sm text-emerald-200/70 font-medium mt-1.5 text-center">{subtitle}</p>
 
-        {/* PIN dots — active dots glow emerald, inactive dots stay clearly visible on any theme */}
         <div
-          className="flex items-center gap-4 my-8 rounded-2xl bg-white/85 border border-emerald-100 px-6 py-4 shadow-sm backdrop-blur-sm"
+          className="flex items-center gap-4 my-8 rounded-2xl bg-slate-900/60 backdrop-blur-xl border border-emerald-500/30 px-6 py-4 shadow-xl"
           role="status"
           aria-label={`${displayValue.length} of 4 digits entered`}
         >
@@ -168,8 +165,8 @@ export function PinScreen({ onSuccess, onBack }: PinScreenProps) {
                 transition={{ duration: 0.2 }}
                 className={`w-4 h-4 rounded-full transition-all duration-200 ${
                   filled
-                    ? 'bg-emerald-500 border-2 border-emerald-600 shadow-[0_0_10px_rgba(16,185,129,0.75)] scale-110'
-                    : 'bg-white border-2 border-slate-400 ring-2 ring-white/70'
+                    ? 'bg-emerald-400 border-2 border-emerald-300 shadow-[0_0_15px_rgba(52,211,153,0.8)] scale-110'
+                    : 'bg-slate-800 border-2 border-slate-700 ring-2 ring-slate-900/50'
                 }`}
               />
             );
@@ -182,10 +179,10 @@ export function PinScreen({ onSuccess, onBack }: PinScreenProps) {
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
-              className="flex items-center gap-2 rounded-xl bg-red-50 border border-red-200 px-4 py-2.5 mb-4 overflow-hidden"
+              className="flex items-center gap-2 rounded-xl bg-red-500/20 border border-red-500/30 px-4 py-2.5 mb-4 overflow-hidden text-red-200"
             >
-              <AlertCircle className="w-4 h-4 text-red-500 shrink-0" strokeWidth={2.5} />
-              <p className="text-sm font-bold text-red-700">{error}</p>
+              <AlertCircle className="w-4 h-4 text-red-400 shrink-0" strokeWidth={2.5} />
+              <p className="text-sm font-bold">{error}</p>
             </motion.div>
           )}
         </AnimatePresence>
@@ -196,14 +193,13 @@ export function PinScreen({ onSuccess, onBack }: PinScreenProps) {
           </div>
         )}
 
-        {/* Number pad */}
         <div className="grid grid-cols-3 gap-3 w-full max-w-xs">
           {['1', '2', '3', '4', '5', '6', '7', '8', '9'].map((digit) => (
             <button
               key={digit}
               onClick={() => handleDigit(digit)}
               disabled={loading}
-              className="flex items-center justify-center w-full aspect-square rounded-2xl bg-white border-2 border-emerald-100 text-xl font-extrabold text-slate-800 hover:bg-emerald-50 hover:border-emerald-300 hover:scale-[1.03] active:scale-90 transition-all duration-200 shadow-sm disabled:opacity-60"
+              className="flex items-center justify-center w-full aspect-square rounded-2xl bg-slate-900/60 backdrop-blur-md border border-emerald-500/20 text-xl font-extrabold text-emerald-100 hover:bg-emerald-500/20 hover:border-emerald-400 hover:scale-[1.03] active:scale-90 transition-all duration-200 shadow-sm disabled:opacity-60"
             >
               {digit}
             </button>
@@ -212,7 +208,7 @@ export function PinScreen({ onSuccess, onBack }: PinScreenProps) {
           <button
             onClick={() => handleDigit('0')}
             disabled={loading}
-            className="flex items-center justify-center w-full aspect-square rounded-2xl bg-white border-2 border-emerald-100 text-xl font-extrabold text-slate-800 hover:bg-emerald-50 hover:border-emerald-300 hover:scale-[1.03] active:scale-90 transition-all duration-200 shadow-sm disabled:opacity-60"
+            className="col-start-2 flex items-center justify-center w-full aspect-square rounded-2xl bg-slate-900/60 backdrop-blur-md border border-emerald-500/20 text-xl font-extrabold text-emerald-100 hover:bg-emerald-500/20 hover:border-emerald-400 hover:scale-[1.03] active:scale-90 transition-all duration-200 shadow-sm disabled:opacity-60"
           >
             0
           </button>
@@ -220,13 +216,12 @@ export function PinScreen({ onSuccess, onBack }: PinScreenProps) {
             onClick={handleDelete}
             disabled={loading}
             aria-label="Delete last digit"
-            className="flex items-center justify-center w-full aspect-square rounded-2xl bg-amber-50 border-2 border-amber-200 text-amber-600 hover:bg-amber-100 active:scale-90 transition-all duration-200 disabled:opacity-60"
+            className="flex items-center justify-center w-full aspect-square rounded-2xl bg-amber-500/20 border border-amber-500/30 text-amber-300 hover:bg-amber-500/30 active:scale-90 transition-all duration-200 disabled:opacity-60"
           >
             <Delete className="w-5 h-5" strokeWidth={2.5} />
           </button>
         </div>
 
-        {/* Skip — full-width, high-contrast, generous hit target */}
         {mode !== 'enter' && (
           <button
             onClick={handleSkip}
